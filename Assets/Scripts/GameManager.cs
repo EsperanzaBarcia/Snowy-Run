@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     int playerSpeed;
 
-
     [Header("UI references")]
     /// <summary>
     /// Reference to Title canvas
@@ -39,6 +38,16 @@ public class GameManager : MonoBehaviour
     /// Tag asigned to goal gameobject
     /// </summary>
     public string goalTagName;
+
+    /// <summary>
+    /// Tag asigned to collected gameobject
+    /// </summary>
+    public string ballTagName;
+
+    /// <summary>
+    /// Tag asigned to wall gameobject
+    /// </summary>
+    public string wallTagName;
 
     #region Singleton pattern
 
@@ -157,5 +166,4 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
 }

@@ -16,7 +16,15 @@ public class Player : MonoBehaviour
 
     public int Speed { get => speed; set => speed = value; }
 
+    /// <summary>
+    /// Player score
+    /// </summary>
     int score;
+
+    /// <summary>
+    /// Balls collected //when its 5 it grows
+    /// </summary>
+    int ballsCollected;
 
     // Start is called before the first frame update
     void Start()
@@ -43,9 +51,19 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method to increase score and balls count
+    /// </summary>
+    /// <param name="pointsToAdd"></param>
     public void AddPoints(int pointsToAdd)
     {
         score = pointsToAdd;
+        ballsCollected += 1;
+    }
+
+    public void Shoot()
+    {
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -59,9 +77,8 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
-        //PRueba
-        if (collision.gameObject.CompareTag("Death"))
+        
+        if (collision.gameObject.CompareTag(GameManager.Instance.wallTagName))
         {
             GameManager.Instance.GameOver();
         }
