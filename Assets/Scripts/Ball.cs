@@ -32,5 +32,10 @@ public class Ball : MonoBehaviour
             other.GetComponent<Player>().AddPoints(points);
             gameObject.SetActive(false);
         }
+
+        /*else if(other.CompareTag("Floor"))
+        {
+            gameObject.SetActive(false);
+        }*/
     }
 }

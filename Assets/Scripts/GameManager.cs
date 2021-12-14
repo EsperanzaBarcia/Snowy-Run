@@ -49,6 +49,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public string wallTagName;
 
+    [Header("Prefab")]
+    public GameObject bulletPrefab;
+
     #region Singleton pattern
 
     static GameManager _instance;
