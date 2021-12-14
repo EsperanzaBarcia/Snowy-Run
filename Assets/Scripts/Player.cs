@@ -43,6 +43,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void AddPoints(int pointsToAdd)
+    {
+        score = pointsToAdd;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -51,17 +55,16 @@ public class Player : MonoBehaviour
             //TODO:zona de yard, quitar end game
             GameManager.Instance.EndGame();
         }
-       
-        /*//PRueba
-        else if( other.CompareTag("Death"))
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        //PRueba
+        if (collision.gameObject.CompareTag("Death"))
         {
             GameManager.Instance.GameOver();
-        }*/
+        }
     }
 
-
-    public void AddPoints(int pointsToAdd)
-    {
-        score = pointsToAdd;
-    }
 }
