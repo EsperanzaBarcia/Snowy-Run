@@ -46,6 +46,12 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
             Shoot();
 
+        if (Input.GetKeyDown(KeyCode.A))
+            playerTransform.Translate(Vector3.left+ Vector3.forward * speed * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.D))
+            playerTransform.Translate(Vector3.right + Vector3.forward * speed * Time.deltaTime);
+
         if (speed > 0)
             MovePlayer();
     }

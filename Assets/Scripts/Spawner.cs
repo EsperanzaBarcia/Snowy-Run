@@ -4,33 +4,83 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    //de momento solo los wall
-    public GameObject wallToInstantiate;
+    /// <summary>
+    /// Position from where the spawner starts
+    /// </summary>
+    Vector3 startPosition;
 
     /// <summary>
-    /// 
+    /// Spawned items list
     /// </summary>
-    public int wallMaxCount;
+    List<GameObject> spawnedItems = new List<GameObject>();
 
     /// <summary>
-    /// 
+    /// probabilities for each item 
     /// </summary>
-    List<GameObject> walls = new List<GameObject>();
+    [Header("Probabilities")]
+    public int goodItemProb;
+    public int badItemProb;
+
+    /// <summary>
+    /// Goal reference
+    /// </summary>
+    public GameObject goal;
+
+    /// <summary>
+    /// Prefabs to spawn
+    /// </summary>
+    [Header("Prefabs")]
+    public GameObject goodItemPrefab;
+    public GameObject badItemPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < wallMaxCount; i++)
+        //Saves the start position
+        startPosition = transform.position;
+        // SpawnRandomItems();
+
+        SpawnItems();
+    }
+
+    void SpawnItems()
+    {
+        //max of iterations
+        int maxTimes =3;
+        int times = 0;
+
+        //from start to goal position
+        for(int i = (int)startPosition.z; i < goal.transform.position.z && times < maxTimes; i++)
         {
-            GameObject wall = Instantiate(wallToInstantiate, transform,false);
-            wall.transform.position = Vector3.zero;
-            walls.Add(wall);
+           
+            GameObject objectToSpawn;
+            int randomNumber = Random.Range(1, 101);
+
+            //Probabilities
+            if (randomNumber <= goodItemProb)
+            {
+                objectToSpawn = Instantiate(goodItemPrefab, transform.position, Quaternion.identity, null);
+                spawnedItems.Add(objectToSpawn);
+            }
+
+            else if (randomNumber > goodItemProb && randomNumber <= goodItemProb + badItemProb)
+            {
+                objectToSpawn = Instantiate(badItemPrefab, transform.position, Quaternion.identity, null);
+                spawnedItems.Add(objectToSpawn);
+            }
+
+            //Moves to next position
+            transform.position = new Vector3(transform.position.x, transform.position.y, i);
+
+            //resets the position
+            if(transform.position.z == (int)(goal.transform.position.z - 1))
+            {
+                transform.position = new Vector3(transform.position.x + 2, startPosition.y, startPosition.z);
+                i = (int)startPosition.z;
+                times++;
+            }
+
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
