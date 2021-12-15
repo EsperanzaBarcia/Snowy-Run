@@ -22,51 +22,32 @@ public class Player : MonoBehaviour
     int score;
 
     /// <summary>
-    /// Balls collected //when its 5 it grows
+    /// Force to impulse the bullets
     /// </summary>
-    int ballsCollected;
-
-    /// <summary>
-    /// Bullet
-    /// </summary>
-    GameObject bullet;
-
-    /// <summary>
-    /// Bullet rigidbody reference
-    /// </summary>
-    Rigidbody bulletRb;
-
     int bulletForce = 15;
+
+    /// <summary>
+    /// List of ready bullets to shoot
+    /// </summary>
+    List<GameObject> snowBalls = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
         playerTransform = GetComponent<Transform>();
+        //TODO:Empezar con una cierta cantidad de bolas
 
-        //bullet settings
-        if(GameManager.Instance.bulletPrefab)
-        {
-            bullet = Instantiate(GameManager.Instance.bulletPrefab,transform);
-
-            //Set te position so the ball doesnt touch the player
-            bullet.transform.localPosition = new Vector3(0, 0, .5f);
-            bullet.SetActive(false);
-
-            bulletRb = bullet.GetComponent<Rigidbody>();
-            bulletRb.useGravity = true;
-        }
-       
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (speed > 0)
-            MovePlayer();
-
         //TODO:Cambiar por click
         if (Input.GetKeyDown(KeyCode.Space))
-        Shoot();
+            Shoot();
+
+        if (speed > 0)
+            MovePlayer();
     }
 
     /// <summary>
@@ -85,10 +66,26 @@ public class Player : MonoBehaviour
     /// Method to increase score and balls count
     /// </summary>
     /// <param name="pointsToAdd"></param>
-    public void AddPoints(int pointsToAdd)
+    public void AddPoints(int pointsToAdd, GameObject ball)
     {
-        score = pointsToAdd;
-        ballsCollected += 1;
+        score += pointsToAdd;
+
+        if (ball)
+        {
+            //Now the player is the parent
+            ball.transform.SetParent(playerTransform);
+
+            //Position from witch is going to be shot
+            ball.transform.localPosition = new Vector3(0, 0, 1);
+
+            //is added to the snowballs list
+            snowBalls.Add(ball);
+        }
+        else
+        {
+            Debug.LogError("Ball is null");
+        }
+
     }
 
     /// <summary>
@@ -97,17 +94,36 @@ public class Player : MonoBehaviour
     public void Shoot()
     {
         Debug.Log("shoot");
-        if(ballsCollected > 0)
+
+        if (snowBalls.Count > 0)
         {
-            bullet.SetActive(true);
-            bulletRb.AddForce(new Vector3(0, 0, bulletForce), ForceMode.Impulse);
-            ballsCollected -= 1;
+            //Gets the first ball available
+            GameObject tempBullet = snowBalls[0];
 
-            if(ballsCollected==0)
-                GameManager.Instance.GameOver();
+            if (tempBullet)
+            {
+                //Shows the ball
+                tempBullet.SetActive(true);
 
-           /* bullet.SetActive(false);
-            bullet.transform.localPosition = new Vector3(0, 0, .5f);*/
+                Rigidbody tempRb = tempBullet.GetComponent<Rigidbody>();
+
+                if (tempRb)
+                {
+                    //Applies the impulse
+                    tempRb.AddForce(bulletForce * tempBullet.transform.forward, ForceMode.Impulse);
+                    tempRb.useGravity = true;
+
+                    //Removes the ball from the list and sorts it to use next
+                    snowBalls.Remove(tempBullet);
+
+                    //if the player is out of balls dies
+                    if (snowBalls.Count == 0)
+                    {
+                        GameManager.Instance.GameOver();
+                    }
+                }
+
+            }
 
         }
     }
@@ -123,7 +139,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        
+
         if (collision.gameObject.CompareTag(GameManager.Instance.wallTagName))
         {
             GameManager.Instance.GameOver();

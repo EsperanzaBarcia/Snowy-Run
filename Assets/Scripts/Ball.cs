@@ -29,13 +29,13 @@ public class Ball : MonoBehaviour
         //Adds points to player
         if(other.CompareTag("Player"))
         {
-            other.GetComponent<Player>().AddPoints(points);
+            other.GetComponent<Player>().AddPoints(points,gameObject);
             gameObject.SetActive(false);
         }
 
-        /*else if(other.CompareTag("Floor"))
+        else if(other.CompareTag("Limit"))
         {
             gameObject.SetActive(false);
-        }*/
+        }
     }
 }
