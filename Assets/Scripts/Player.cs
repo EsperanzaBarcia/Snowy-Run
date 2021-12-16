@@ -31,6 +31,17 @@ public class Player : MonoBehaviour
     /// </summary>
     List<GameObject> snowBalls = new List<GameObject>();
 
+    Touch touch;
+
+    //Reference to shooting area
+    public GameObject shootingArea;
+
+    //Reference to moving area
+    public GameObject movingArea;
+
+    //distance from camera to point
+    float distance = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,17 +54,38 @@ public class Player : MonoBehaviour
     void Update()
     {
         //TODO:Cambiar por click
-        if (Input.GetKeyDown(KeyCode.Space))
-            Shoot();
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //    Shoot();
 
-        if (Input.GetKeyDown(KeyCode.A))
-            playerTransform.Translate(Vector3.left+ Vector3.forward * speed * Time.deltaTime);
+        //Horizontal movement by touch
+        if (Input.touchCount > 0)
+        {
+            touch = Input.GetTouch(0);
+            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, distance));
 
-        if (Input.GetKeyDown(KeyCode.D))
-            playerTransform.Translate(Vector3.right + Vector3.forward * speed * Time.deltaTime);
+            //if the player touches te shooting area, shoots
+            if (isPointContainedInArea(worldPoint, shootingArea))
+            {
+                Shoot();
+            }
 
+            //Otherwise, moves 
+            else if (isPointContainedInArea(worldPoint, movingArea) && Input.GetTouch(0).phase == TouchPhase.Moved)
+            {
+                playerTransform.transform.position += new Vector3(touch.deltaPosition.x * Speed, 0, 0);
+            }
+        }
+
+        //The player always moves forwards
         if (speed > 0)
             MovePlayer();
+
+        //if (Input.GetKeyDown(KeyCode.A))
+        //    playerTransform.Translate(Vector3.left + Vector3.forward * speed * Time.deltaTime);
+
+        //if (Input.GetKeyDown(KeyCode.D))
+        //    playerTransform.Translate(Vector3.right + Vector3.forward * speed * Time.deltaTime);
+
     }
 
     /// <summary>
@@ -64,7 +96,7 @@ public class Player : MonoBehaviour
         if (playerTransform)
         {
             //player movement
-            playerTransform.Translate(Vector3.forward * Speed * Time.deltaTime);
+            playerTransform.Translate(playerTransform.forward * Speed * Time.deltaTime);
         }
     }
 
@@ -152,4 +184,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Metho to check if a point is contained on an area
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="area"></param>
+    /// <returns></returns>
+    bool isPointContainedInArea(Vector3 point, GameObject area)
+    {
+        Collider areaCollider = area.GetComponent<Collider>();
+        return areaCollider.bounds.Contains(point);
+    }
 }
