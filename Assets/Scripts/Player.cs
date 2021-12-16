@@ -50,6 +50,15 @@ public class Player : MonoBehaviour
     /// </summary>
     Vector3 direction = Vector3.zero;
 
+    /// <summary>
+    /// Reference to character
+    /// </summary>
+    public GameObject visualCharacter;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    CharacterController characterScript;
 
     //DEBUG
     public Text debugText;
@@ -59,6 +68,12 @@ public class Player : MonoBehaviour
     {
         playerTransform = GetComponent<Transform>();
         //TODO:Empezar con una cierta cantidad de bolas
+
+        if (visualCharacter)
+        {
+            characterScript = visualCharacter.GetComponent<CharacterController>();
+        }
+
     }
 
     // Update is called once per frame
@@ -115,7 +130,7 @@ public class Player : MonoBehaviour
 
         //The player always moves forwards
         //if (_zSpeed > 0)
-            Move();
+        Move();
 
     }
 
@@ -129,6 +144,12 @@ public class Player : MonoBehaviour
         _zSpeed = Zspeed;
         _xSpeed = Xspeed;
         canMove = true;
+
+        if (characterScript)
+        {
+            characterScript.Run();
+        }
+
     }
 
     /// <summary>
@@ -151,6 +172,7 @@ public class Player : MonoBehaviour
             //player movement
             playerTransform.Translate((playerTransform.forward * _zSpeed + direction * _xSpeed) * Time.deltaTime);
             debugText.text = "dir: " + direction.x + " " + (playerTransform.forward + direction) + touch.phase.ToString();
+
         }
     }
 

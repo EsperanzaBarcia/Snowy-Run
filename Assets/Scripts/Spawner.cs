@@ -59,13 +59,13 @@ public class Spawner : MonoBehaviour
             //Probabilities
             if (randomNumber <= goodItemProb)
             {
-                objectToSpawn = Instantiate(goodItemPrefab, transform.position, Quaternion.identity, null);
+                objectToSpawn = Instantiate(goodItemPrefab, transform.position, transform.rotation, null);
                 spawnedItems.Add(objectToSpawn);
             }
 
             else if (randomNumber > goodItemProb && randomNumber <= goodItemProb + badItemProb)
             {
-                objectToSpawn = Instantiate(badItemPrefab, transform.position, Quaternion.identity, null);
+                objectToSpawn = Instantiate(badItemPrefab, transform.position, transform.rotation, null);
                 spawnedItems.Add(objectToSpawn);
             }
 
