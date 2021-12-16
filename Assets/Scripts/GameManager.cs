@@ -16,7 +16,13 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Players speed, setted by inspector
     /// </summary>
-    int playerSpeed;
+    int playerZSpeed;
+
+    [SerializeField]
+    /// <summary>
+    ///
+    /// </summary>
+    int playerXSpeed;
 
     [Header("UI references")]
     /// <summary>
@@ -87,7 +93,7 @@ public class GameManager : MonoBehaviour
             if (player)
             {
                 //sets the speed
-                player.Speed = playerSpeed;
+                player.Initialise(playerZSpeed,playerXSpeed);
             }
             else
             {
@@ -116,7 +122,7 @@ public class GameManager : MonoBehaviour
             if (player)
             {
                 //Stops the player
-                player.Speed = 0;
+                player.Stop();
 
                 //TODO: animation¿?
             }
@@ -144,7 +150,7 @@ public class GameManager : MonoBehaviour
             if (player)
             {
                 //Stops the player
-                player.Speed = 0;
+                player.Stop();
 
                 //TODO: CANVAS bueno
             }

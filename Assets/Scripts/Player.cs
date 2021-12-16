@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     /// <summary>
-    /// Players speed, setteable by inspector
+    /// Players horizontal speed, setteable by inspector
     /// </summary>
-    int speed = 0;
+    int _xSpeed = 0;
+
+    /// <summary>
+    /// Players depth speed, setteable by inspector
+    /// </summary>
+    int _zSpeed = 0;
 
     /// <summary>
     /// Player transform
     /// </summary>
     Transform playerTransform;
-
-    public int Speed { get => speed; set => speed = value; }
 
     /// <summary>
     /// Player score
@@ -31,72 +35,122 @@ public class Player : MonoBehaviour
     /// </summary>
     List<GameObject> snowBalls = new List<GameObject>();
 
+    /// <summary>
+    /// 
+    /// </summary>
     Touch touch;
 
-    //Reference to shooting area
-    public GameObject shootingArea;
+    /// <summary>
+    /// bool to set when the player can move
+    /// </summary>
+    bool canMove;
 
-    //Reference to moving area
-    public GameObject movingArea;
+    /// <summary>
+    /// Direction to move the player
+    /// </summary>
+    Vector3 direction = Vector3.zero;
 
-    //distance from camera to point
-    float distance = 1;
+
+    //DEBUG
+    public Text debugText;
 
     // Start is called before the first frame update
     void Start()
     {
         playerTransform = GetComponent<Transform>();
         //TODO:Empezar con una cierta cantidad de bolas
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        //TODO:Cambiar por click
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //    Shoot();
-
         //Horizontal movement by touch
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && canMove)
         {
             touch = Input.GetTouch(0);
-            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, distance));
-
-            //if the player touches te shooting area, shoots
-            if (isPointContainedInArea(worldPoint, shootingArea))
-            {
-                Shoot();
-            }
+            Vector2 startPosition = Vector2.zero;
 
             //Otherwise, moves 
-            else if (isPointContainedInArea(worldPoint, movingArea) && Input.GetTouch(0).phase == TouchPhase.Moved)
+
+            switch (touch.phase)
             {
-                playerTransform.transform.position += new Vector3(touch.deltaPosition.x * Speed, 0, 0);
+                //saves the touch if it is the moving area
+                case TouchPhase.Began:
+                    {
+                        if (isTouchingMovingArea())
+                            startPosition = touch.position;
+
+                        break;
+                    }
+
+                //Calculates the direction of the movement
+                case TouchPhase.Moved:
+                    {
+                        if (isTouchingMovingArea())
+                        {
+                            if (touch.deltaPosition.x > startPosition.x)//right
+                            {
+                                direction.x = 1;
+                            }
+                            else if (touch.deltaPosition.x < startPosition.x)//left
+                            {
+                                direction.x = -1;
+                            }
+                        }
+                        break;
+                    }
+
+                //Stops moving and if is on shooting area shoots
+                case TouchPhase.Ended:
+                    {
+                        direction.x = 0;
+                        startPosition = Vector2.zero;
+
+                        if (!isTouchingMovingArea())
+                            Shoot();
+                        break;
+                    }
             }
         }
 
         //The player always moves forwards
-        if (speed > 0)
-            MovePlayer();
+        //if (_zSpeed > 0)
+            Move();
 
-        //if (Input.GetKeyDown(KeyCode.A))
-        //    playerTransform.Translate(Vector3.left + Vector3.forward * speed * Time.deltaTime);
+    }
 
-        //if (Input.GetKeyDown(KeyCode.D))
-        //    playerTransform.Translate(Vector3.right + Vector3.forward * speed * Time.deltaTime);
+    /// <summary>
+    /// Method to start moving the player
+    /// </summary>
+    /// <param name="Zspeed"></param>
+    /// <param name="Xspeed"></param>
+    public void Initialise(int Zspeed, int Xspeed)
+    {
+        _zSpeed = Zspeed;
+        _xSpeed = Xspeed;
+        canMove = true;
+    }
 
+    /// <summary>
+    /// Method to stop the player
+    /// </summary>
+    public void Stop()
+    {
+        _zSpeed = 0;
+        _xSpeed = 0;
+        canMove = false;
     }
 
     /// <summary>
     /// Method to move the player always forwards
     /// </summary>
-    void MovePlayer()
+    void Move()
     {
         if (playerTransform)
         {
             //player movement
-            playerTransform.Translate(playerTransform.forward * Speed * Time.deltaTime);
+            playerTransform.Translate((playerTransform.forward * _zSpeed + direction * _xSpeed) * Time.deltaTime);
+            debugText.text = "dir: " + direction.x + " " + (playerTransform.forward + direction) + touch.phase.ToString();
         }
     }
 
@@ -132,6 +186,7 @@ public class Player : MonoBehaviour
     public void Shoot()
     {
         Debug.Log("shoot");
+        debugText.text = "shoot";
 
         if (snowBalls.Count > 0)
         {
@@ -155,10 +210,10 @@ public class Player : MonoBehaviour
                     snowBalls.Remove(tempBullet);
 
                     //if the player is out of balls dies
-                    if (snowBalls.Count == 0)
-                    {
-                        GameManager.Instance.GameOver();
-                    }
+                    /* if (snowBalls.Count == 0)
+                     {
+                         GameManager.Instance.GameOver();
+                     }*/
                 }
 
             }
@@ -185,14 +240,12 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Metho to check if a point is contained on an area
+    /// Method to check if the player is touching move area
+    /// if it is not, it is touching shooting area
     /// </summary>
-    /// <param name="point"></param>
-    /// <param name="area"></param>
     /// <returns></returns>
-    bool isPointContainedInArea(Vector3 point, GameObject area)
+    bool isTouchingMovingArea()
     {
-        Collider areaCollider = area.GetComponent<Collider>();
-        return areaCollider.bounds.Contains(point);
+        return touch.position.y <= Screen.height / 3;
     }
 }
