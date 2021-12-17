@@ -19,7 +19,7 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        transform.position = new Vector3(transform.position.x, ballAnimator.gameObject.transform.position.y + ballAnimator.gameObject.transform.parent.transform.localScale.y/2, transform.position.z);
     }
 
     public void Run()

@@ -30,7 +30,8 @@ public class Multiplier : MonoBehaviour
         {
             GameManager.Instance.Multiplier = multiplyValue;
             //TODO:HARDCODE
-            collision.gameObject.GetComponent<Player>().RemoveSnowballs(3);
+            collision.gameObject.GetComponent<Player>().RemoveSnowballs(
+                5);
         }
     }
 }

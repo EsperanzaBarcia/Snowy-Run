@@ -56,6 +56,11 @@ public class Player : MonoBehaviour
     public GameObject visualCharacter;
 
     /// <summary>
+    /// Reference to character
+    /// </summary>
+    public GameObject visualBall;
+
+    /// <summary>
     /// 
     /// </summary>
     CharacterController characterScript;
@@ -191,11 +196,23 @@ public class Player : MonoBehaviour
             //Now the player is the parent
             ball.transform.SetParent(playerTransform);
 
-            //Position from witch is going to be shot
+            //Position from which is going to be shot
             ball.transform.localPosition = new Vector3(0, 0, 1);
 
             //is added to the snowballs list
             snowBalls.Add(ball);
+
+            if (visualBall)
+            {
+                if (snowBalls.Count % 5 == 0)
+                    //TODO:HARDCODE
+                    StartCoroutine(IncreaseBall(.1f));
+            }
+            else
+            {
+                Debug.LogError("Visual ball is not asigned");
+            }
+
         }
         else
         {
@@ -233,11 +250,8 @@ public class Player : MonoBehaviour
                     //Removes the ball from the list and sorts it to use next
                     snowBalls.Remove(tempBullet);
 
-                    //if the player is out of balls dies
-                    /* if (snowBalls.Count == 0)
-                     {
-                         GameManager.Instance.GameOver();
-                     }*/
+                    StartCoroutine(DecreaseBall(.05f));
+
                 }
 
             }
@@ -283,13 +297,99 @@ public class Player : MonoBehaviour
                 snowBalls.RemoveRange(0, count);
                 _zSpeed--;
                 Debug.Log("Ahora" + snowBalls.Count);
+
+                for (int i = 0; i < count; i++)
+                {
+                    //TODO:hardCODE
+                    StartCoroutine(DecreaseBall(.1f));
+                }
+
             }
             else if (snowBalls.Count <= count)
             {
                 snowBalls.Clear();
 
+                //TODO:hardCODE
+                //TODO:CAMBIAR VALOR
+                StartCoroutine(DecreaseBall(1f));
+
                 GameManager.Instance.EndGame();
             }
         }
     }
+
+    /* private void DecreaseBall(float scaleToDecrease)
+     {
+         int scalingFrames = 10;
+         //TODO:HARDCODE
+         if (visualBall.transform.localScale.x - scaleToDecrease > .1f)
+         {
+             // visualBall.transform.localScale -= new Vector3(scaleToDecrease, scaleToDecrease, scaleToDecrease);
+             Vector3.Lerp(visualBall.transform.localScale, visualBall.transform.localScale - new Vector3(scaleToDecrease, scaleToDecrease, scaleToDecrease),);
+
+         }
+         //TODO:HARDCODE
+         // visualBall.transform.localScale -= new Vector3(scaleToDecrease, scaleToDecrease, scaleToDecrease);
+         else
+             //visualBall.transform.localScale = new Vector3(.1f, .1f, .1f);
+             //Vector3.Lerp(visualBall.transform.localScale, new Vector3(.1f, .1f, .1f), 1);
+             //visualBall.transform.localScale = new Vector3(.1f, .1f, .1f);
+     }*/
+
+    //TODO: HACER SCRIPT BALL
+    IEnumerator IncreaseBall(float scaleToIncrease)
+    {
+        float elapsedTime = 0;
+        float seconds = 1;
+
+        Vector3 currentScale = visualBall.transform.localScale;
+        Vector3 finalScale;
+
+        if (currentScale.x + scaleToIncrease < 6f)
+        {
+            finalScale = currentScale + new Vector3(scaleToIncrease, scaleToIncrease, scaleToIncrease);
+        }
+        else
+        {
+            //minimun size
+            finalScale = new Vector3(6f, 6f, 6f);
+        }
+
+        while (elapsedTime < 1)
+        {
+            visualBall.transform.localScale = Vector3.Lerp(currentScale, finalScale, elapsedTime / seconds);
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+
+    IEnumerator DecreaseBall(float scaleToDecrease)
+    {
+        float elapsedTime = 0;
+        float seconds = 1;
+
+        Vector3 currentScale = visualBall.transform.localScale;
+        Vector3 finalScale;
+
+        if (currentScale.x - scaleToDecrease > 1f)
+        {
+            finalScale = currentScale - new Vector3(scaleToDecrease, scaleToDecrease, scaleToDecrease);
+        }
+        else
+        {
+            //minimun size
+            //TODO:HARDCODE
+            finalScale = new Vector3(.1f, .1f, .1f);
+        }
+
+        while (elapsedTime < 1)
+        {
+            visualBall.transform.localScale = Vector3.Lerp(currentScale, finalScale, elapsedTime / seconds);
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+
 }
