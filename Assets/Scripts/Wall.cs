@@ -15,14 +15,10 @@ public class Wall : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void DestroyWall()
     {
-        //if the player hits 
-        if (other.CompareTag(GameManager.Instance.ballTagName))
-        {
-            //Animation
-            //Disables the wall
-            gameObject.SetActive(false);
-        }
+        //Animation
+        //Disables the wall
+        gameObject.SetActive(false);
     }
 }

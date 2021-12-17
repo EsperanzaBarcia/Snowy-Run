@@ -56,9 +56,9 @@ public class Player : MonoBehaviour
     public GameObject visualCharacter;
 
     /// <summary>
-    /// Reference to character
+    /// Reference to ball
     /// </summary>
-    public GameObject visualBall;
+    public PlayerBallController visualBall;
 
     /// <summary>
     /// 
@@ -80,6 +80,9 @@ public class Player : MonoBehaviour
         {
             characterScript = visualCharacter.GetComponent<CharacterController>();
         }
+
+        if (!visualBall)
+            Debug.LogError("Visual ball is not asigned");
 
     }
 
@@ -110,7 +113,7 @@ public class Player : MonoBehaviour
                         startPosition = Vector2.zero;
 
                         //if its on play mode and not moving shoots
-                        
+
                         break;
                     }
 
@@ -205,9 +208,9 @@ public class Player : MonoBehaviour
 
             if (visualBall)
             {
-                if (snowBalls.Count % 5 == 0)
-                    //TODO:HARDCODE
-                    StartCoroutine(IncreaseBall(.5f));
+                //if (snowBalls.Count % 5 == 0)
+                //TODO:HARDCODE
+                visualBall.StartIncreasingBall(.5f);
             }
             else
             {
@@ -251,7 +254,7 @@ public class Player : MonoBehaviour
                     //Removes the ball from the list and sorts it to use next
                     snowBalls.Remove(tempBullet);
 
-                    StartCoroutine(DecreaseBall(.05f));
+                    visualBall.StartDecreasingBall(.05f);
 
                 }
 
@@ -264,7 +267,6 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag(GameManager.Instance.goalTagName))
         {
-            //TODO:zona de yard, quitar end game
             GameManager.Instance.EndGame();
         }
     }
@@ -274,7 +276,18 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag(GameManager.Instance.wallTagName))
         {
-            GameManager.Instance.GameOver();
+            //TODO:HARDCODE
+            if (visualBall.GetParentSize() >= visualBall.bigSize)
+            {
+                collision.gameObject.GetComponent<Wall>().DestroyWall();
+                //TODO:HARDCODE
+                RemoveSnowballs(10);
+            }
+            else
+            {
+                GameManager.Instance.GameOver();
+            }
+
         }
     }
 
@@ -292,77 +305,34 @@ public class Player : MonoBehaviour
                 for (int i = 0; i < count; i++)
                 {
                     //TODO:hardCODE
-                    StartCoroutine(DecreaseBall(.1f));
+                    visualBall.StartDecreasingBall(.5f);
                 }
 
             }
-            else if (snowBalls.Count <= count)
+            else if (snowBalls.Count <= count && snowBalls.Count > 0)
+            {
+                snowBalls.RemoveAt(0);
+                visualBall.StartDecreasingBall(.5f);
+            }
+            else
             {
                 snowBalls.Clear();
 
                 //TODO:hardCODE
                 //TODO:CAMBIAR VALOR
-                StartCoroutine(DecreaseBall(1f));
+                visualBall.StartDecreasingBall(1f);
 
                 GameManager.Instance.EndGame();
             }
         }
-    }
-
-    //TODO: HACER SCRIPT BALL
-    IEnumerator IncreaseBall(float scaleToIncrease)
-    {
-        float elapsedTime = 0;
-        float seconds = 1;
-
-        Vector3 currentScale = visualBall.transform.localScale;
-        Vector3 finalScale;
-
-        if (currentScale.x + scaleToIncrease < 6f)
-        {
-            finalScale = currentScale + new Vector3(scaleToIncrease, scaleToIncrease, scaleToIncrease);
-        }
         else
         {
-            //minimun size
-            finalScale = new Vector3(6f, 6f, 6f);
-        }
-
-        while (elapsedTime < 1)
-        {
-            visualBall.transform.localScale = Vector3.Lerp(currentScale, finalScale, elapsedTime / seconds);
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            for (int i = 0; i < count; i++)
+            {
+                //TODO:hardCODE
+                visualBall.StartDecreasingBall(.5f);
+            }
         }
     }
-
-
-    IEnumerator DecreaseBall(float scaleToDecrease)
-    {
-        float elapsedTime = 0;
-        float seconds = 1;
-
-        Vector3 currentScale = visualBall.transform.localScale;
-        Vector3 finalScale;
-
-        if (currentScale.x - scaleToDecrease > 1f)
-        {
-            finalScale = currentScale - new Vector3(scaleToDecrease, scaleToDecrease, scaleToDecrease);
-        }
-        else
-        {
-            //minimun size
-            //TODO:HARDCODE
-            finalScale = new Vector3(.1f, .1f, .1f);
-        }
-
-        while (elapsedTime < 1)
-        {
-            visualBall.transform.localScale = Vector3.Lerp(currentScale, finalScale, elapsedTime / seconds);
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
 
 }
