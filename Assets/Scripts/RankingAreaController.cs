@@ -14,6 +14,7 @@ public class RankingAreaController : MonoBehaviour
     /// </summary>
     Material previousMaterial;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,9 +37,13 @@ public class RankingAreaController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
+        if(other.CompareTag("Player"))
+        {
 
+            GameManager.Instance.startRankingArea();
+        }
     }
+
 }

@@ -29,6 +29,8 @@ public class Multiplier : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             GameManager.Instance.Multiplier = multiplyValue;
+            //TODO:HARDCODE
+            collision.gameObject.GetComponent<Player>().RemoveSnowballs(3);
         }
     }
 }

@@ -61,6 +61,15 @@ public class GameManager : MonoBehaviour
     public string wallTagName;
 
 
+    public enum GamePhase
+    {
+        Gameplay,
+        RankingArea
+    }
+
+    [Header("Game logic")]
+    public GamePhase currentPhase;
+
     #region Singleton pattern
 
     static GameManager _instance;
@@ -103,18 +112,19 @@ public class GameManager : MonoBehaviour
             {
                 //sets the speed
                 player.Initialise(playerZSpeed, playerXSpeed);
+                currentPhase = GamePhase.Gameplay;
             }
             else
             {
                 Debug.LogError("Player is not asigned");
             }
 
+
         }
         else
         {
             Debug.LogError("Title UI is not asigned");
         }
-
 
     }
 
@@ -165,6 +175,7 @@ public class GameManager : MonoBehaviour
 
                 //Sets the score of the player
                 playerScore = CalculateScore();
+                Debug.Log("PlayerScore " + playerScore);
             }
             else
             {
@@ -185,6 +196,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void startRankingArea()
+    {
+        currentPhase = GamePhase.RankingArea;
+        Debug.Log("Entrando en ranking con: " + player.snowBalls.Count);
+    }
+
     /// <summary>
     /// Method to set the player score
     /// </summary>
@@ -192,5 +209,4 @@ public class GameManager : MonoBehaviour
     {
         return player.Score * multiplier;
     }
-
 }

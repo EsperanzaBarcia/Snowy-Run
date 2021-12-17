@@ -8,6 +8,8 @@ TagManager:
   - SnowBall
   - Wall
   - Limit
+  - RankingArea
+  - Multiplier
   layers:
   - Default
   - TransparentFX

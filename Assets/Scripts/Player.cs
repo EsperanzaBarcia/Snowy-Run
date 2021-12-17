@@ -32,8 +32,8 @@ public class Player : MonoBehaviour
 
     /// <summary>
     /// List of ready bullets to shoot
-    /// </summary>
-    List<GameObject> snowBalls = new List<GameObject>();
+    /// </summary> //TODO:PONER PRIVADA
+    public List<GameObject> snowBalls = new List<GameObject>();
 
     /// <summary>
     /// 
@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
     //DEBUG
     public Text debugText;
 
-    public int Score { get => _score;}
+    public int Score { get => _score; }
 
     // Start is called before the first frame update
     void Start()
@@ -123,7 +123,8 @@ public class Player : MonoBehaviour
                         direction.x = 0;
                         startPosition = Vector2.zero;
 
-                        if (!isTouchingMovingArea())
+                        //if its on play mode and not moving shoots
+                        if (!isTouchingMovingArea() && GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
                             Shoot();
                         break;
                     }
@@ -174,7 +175,6 @@ public class Player : MonoBehaviour
             //player movement
             playerTransform.Translate((playerTransform.forward * _zSpeed + direction * _xSpeed) * Time.deltaTime);
             debugText.text = "dir: " + direction.x + " " + (playerTransform.forward + direction) + touch.phase.ToString();
-
         }
     }
 
@@ -271,5 +271,25 @@ public class Player : MonoBehaviour
     bool isTouchingMovingArea()
     {
         return touch.position.y <= Screen.height / 3;
+    }
+
+    public void RemoveSnowballs(int count)
+    {
+        if (GameManager.Instance.currentPhase == GameManager.GamePhase.RankingArea)
+        {
+            if (snowBalls.Count >= count)
+            {
+                //TODO: HARDCODE
+                snowBalls.RemoveRange(0, count);
+                _zSpeed--;
+                Debug.Log("Ahora" + snowBalls.Count);
+            }
+            else if (snowBalls.Count <= count)
+            {
+                snowBalls.Clear();
+
+                GameManager.Instance.EndGame();
+            }
+        }
     }
 }
