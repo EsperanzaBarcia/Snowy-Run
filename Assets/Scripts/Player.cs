@@ -65,8 +65,12 @@ public class Player : MonoBehaviour
     /// </summary>
     CharacterController characterScript;
 
-    //DEBUG
-    public Text debugText;
+    /// <summary>
+    /// Variable to check if this are the first touches of the user
+    /// </summary>
+    int touches;
+
+    bool firstShot;
 
     public int Score { get => _score; }
 
@@ -112,6 +116,8 @@ public class Player : MonoBehaviour
                         direction.x = 0;
                         startPosition = Vector2.zero;
 
+                        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay && touch.position.y > Screen.width / 2)
+                            Shoot();
                         //if its on play mode and not moving shoots
 
                         break;
@@ -119,12 +125,20 @@ public class Player : MonoBehaviour
 
                 case TouchPhase.Stationary:
                     {
+                        if (touches < 2)
+                        {
+                            touches++;
+                        }
+                        else
+                        {
+                            UIManager.Instance.ToggleMovingTutorial(false);
+                        }
 
-                        if (touch.position.x > Screen.width / 2)//right
+                        if (touch.position.x > Screen.width / 2 && touch.position.y <= Screen.width / 2)//right
                         {
                             direction.x = 1;
                         }
-                        else if (touch.position.x < Screen.width / 2)//left
+                        else if (touch.position.x < Screen.width / 2 && touch.position.y <= Screen.width / 2)//left
                         {
                             direction.x = -1;
                         }
@@ -142,8 +156,8 @@ public class Player : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
-            Shoot();
+        /*if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
+            Shoot();*/
     }
 
     /// <summary>
@@ -193,6 +207,12 @@ public class Player : MonoBehaviour
     /// <param name="pointsToAdd"></param>
     public void AddPoints(int pointsToAdd, GameObject ball)
     {
+        if (!firstShot)
+        {
+            UIManager.Instance.ToggleShootingTutorial(true);
+            firstShot = true;
+        }
+
         _score += pointsToAdd;
 
         if (ball)
@@ -211,6 +231,14 @@ public class Player : MonoBehaviour
                 //if (snowBalls.Count % 5 == 0)
                 //TODO:HARDCODE
                 visualBall.StartIncreasingBall(.5f);
+
+                if (GetComponent<SphereCollider>().radius < visualBall.GetParentSize() + .5f)
+                {
+                    GetComponent<SphereCollider>().radius = (visualBall.GetParentSize() + .5f) / 2;
+                    GetComponent<SphereCollider>().center = new Vector3(0, visualBall.GetParentSize() / 2, 0);
+                    //GetComponent<CapsuleCollider>().center += new Vector3(0, .05f, 0);
+                }
+
             }
             else
             {
@@ -231,7 +259,6 @@ public class Player : MonoBehaviour
     public void Shoot()
     {
         Debug.Log("shoot");
-        debugText.text = "shoot";
 
         if (snowBalls.Count > 0)
         {
@@ -256,10 +283,16 @@ public class Player : MonoBehaviour
 
                     visualBall.StartDecreasingBall(.05f);
 
+                    if (GetComponent<SphereCollider>().radius > visualBall.GetParentSize() - .05f)
+                    {
+                        GetComponent<SphereCollider>().radius = (visualBall.GetParentSize() - .05f) / 2;
+                        GetComponent<SphereCollider>().center = new Vector3(0, visualBall.GetParentSize() / 2, 0);
+                    }
                 }
 
             }
 
+            UIManager.Instance.ToggleShootingTutorial(false);
         }
     }
 

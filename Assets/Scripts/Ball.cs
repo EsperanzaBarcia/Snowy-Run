@@ -37,5 +37,9 @@ public class Ball : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        else if (other.CompareTag("Wall"))
+        {
+            other.GetComponent<Wall>().DestroyWall();
+        }
     }
 }

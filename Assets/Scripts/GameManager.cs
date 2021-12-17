@@ -29,22 +29,6 @@ public class GameManager : MonoBehaviour
     int multiplier = 0;
 
     //TODO: UI CONTROLLER¿?
-    [Header("UI references")]
-    /// <summary>
-    /// Reference to Title canvas
-    /// </summary>
-    public GameObject titleUI;
-
-    /// <summary>
-    /// Reference to Title canvas
-    /// </summary>
-    public GameObject EndUI;
-
-    /// <summary>
-    /// Reference to Title canvas
-    /// </summary>
-    public GameObject GameOverUI;
-
     /// <summary>
     /// Tag asigned to goal gameobject
     /// </summary>
@@ -59,7 +43,6 @@ public class GameManager : MonoBehaviour
     /// Tag asigned to wall gameobject
     /// </summary>
     public string wallTagName;
-
 
     public enum GamePhase
     {
@@ -103,29 +86,22 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
-        if (titleUI)
+        //disables canvas
+
+        UIManager.Instance.ToggleTitleUI(false);
+
+        if (player)
         {
-            //disables canvas
-            titleUI.SetActive(false);
+            //sets the speed
+            player.Initialise(playerZSpeed, playerXSpeed);
+            currentPhase = GamePhase.Gameplay;
 
-            if (player)
-            {
-                //sets the speed
-                player.Initialise(playerZSpeed, playerXSpeed);
-                currentPhase = GamePhase.Gameplay;
-            }
-            else
-            {
-                Debug.LogError("Player is not asigned");
-            }
-
-
+            UIManager.Instance.ToggleMovingTutorial(true);
         }
         else
         {
-            Debug.LogError("Title UI is not asigned");
+            Debug.LogError("Player is not asigned");
         }
-
     }
 
     /// <summary>
@@ -133,27 +109,21 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GameOver()
     {
-        if (GameOverUI)
+        //shows game over
+        UIManager.Instance.ToggleGameOverUI(true);
+
+        if (player)
         {
-            //shows game over
-            GameOverUI.SetActive(true);
+            //Stops the player
+            player.Stop();
 
-            if (player)
-            {
-                //Stops the player
-                player.Stop();
-
-                //TODO: animation¿?
-            }
-            else
-            {
-                Debug.LogError("Player is not asigned");
-            }
+            //TODO: animation¿?
         }
         else
         {
-            Debug.LogError("Game over UI is not asigned");
+            Debug.LogError("Player is not asigned");
         }
+
     }
 
     /// <summary>
@@ -161,30 +131,23 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndGame()
     {
-        if (EndUI)
+        //shows end menu
+        UIManager.Instance.ToggleEndUI(true);
+
+        if (player)
         {
-            //shows end menu
-            EndUI.SetActive(true);
+            //Stops the player
+            player.Stop();
 
-            if (player)
-            {
-                //Stops the player
-                player.Stop();
+            //TODO: CANVAS bueno
 
-                //TODO: CANVAS bueno
-
-                //Sets the score of the player
-                playerScore += CalculateScore();
-                Debug.Log("PlayerScore " + playerScore);
-            }
-            else
-            {
-                Debug.LogError("Player is not asigned");
-            }
+            //Sets the score of the player
+            playerScore += CalculateScore();
+            Debug.Log("PlayerScore " + playerScore);
         }
         else
         {
-            Debug.LogError("End level UI is not asigned");
+            Debug.LogError("Player is not asigned");
         }
     }
 

@@ -48,13 +48,13 @@ public class Spawner : MonoBehaviour
     void SpawnItems()
     {
         //max of iterations
-        int maxTimes =5;
+        int maxTimes = 5;
         int times = 0;
 
         //from start to goal position
-        for(int i = (int)startPosition.z; i < goal.transform.position.z && times < maxTimes; i++)
+        for (int i = (int)startPosition.z; i < goal.transform.position.z && times < maxTimes; i++)
         {
-           
+
             GameObject objectToSpawn;
             int randomNumber = Random.Range(1, 101);
             Debug.Log("Random: " + randomNumber);
@@ -76,7 +76,7 @@ public class Spawner : MonoBehaviour
             transform.Translate(Vector3.forward);
 
             //resets the position
-            if ((int)transform.position.z == (int)(goal.transform.position.z - 1))
+            if ((int)transform.position.z == (int)(goal.transform.position.z - 2))
             {
                 transform.position = new Vector3(transform.position.x + 2, startPosition.y, startPosition.z);
                 i = (int)startPosition.z;
