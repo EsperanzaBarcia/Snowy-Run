@@ -38,15 +38,17 @@ public class Spawner : MonoBehaviour
     {
         //Saves the start position
         startPosition = transform.position;
-        // SpawnRandomItems();
 
         SpawnItems();
     }
 
+    /// <summary>
+    /// Method to spawn items
+    /// </summary>
     void SpawnItems()
     {
         //max of iterations
-        int maxTimes =3;
+        int maxTimes =5;
         int times = 0;
 
         //from start to goal position
@@ -55,6 +57,7 @@ public class Spawner : MonoBehaviour
            
             GameObject objectToSpawn;
             int randomNumber = Random.Range(1, 101);
+            Debug.Log("Random: " + randomNumber);
 
             //Probabilities
             if (randomNumber <= goodItemProb)
@@ -70,10 +73,10 @@ public class Spawner : MonoBehaviour
             }
 
             //Moves to next position
-            transform.position = new Vector3(transform.position.x, transform.position.y, i);
+            transform.Translate(Vector3.forward);
 
             //resets the position
-            if(transform.position.z == (int)(goal.transform.position.z - 1))
+            if ((int)transform.position.z == (int)(goal.transform.position.z - 1))
             {
                 transform.position = new Vector3(transform.position.x + 2, startPosition.y, startPosition.z);
                 i = (int)startPosition.z;
