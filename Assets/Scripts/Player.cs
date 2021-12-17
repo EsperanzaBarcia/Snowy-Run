@@ -99,29 +99,10 @@ public class Player : MonoBehaviour
                 //saves the touch if it is the moving area
                 case TouchPhase.Began:
                     {
-                        if (isTouchingMovingArea())
-                            startPosition = touch.position;
+                        startPosition = touch.position;
 
                         break;
                     }
-
-                //Calculates the direction of the movement
-                case TouchPhase.Moved:
-                    {
-                        if (isTouchingMovingArea())
-                        {
-                            if (touch.deltaPosition.x > startPosition.x)//right
-                            {
-                                direction.x = 1;
-                            }
-                            else if (touch.deltaPosition.x < startPosition.x)//left
-                            {
-                                direction.x = -1;
-                            }
-                        }
-                        break;
-                    }
-
                 //Stops moving and if is on shooting area shoots
                 case TouchPhase.Ended:
                     {
@@ -129,8 +110,22 @@ public class Player : MonoBehaviour
                         startPosition = Vector2.zero;
 
                         //if its on play mode and not moving shoots
-                        if (!isTouchingMovingArea() && GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
-                            Shoot();
+                        
+                        break;
+                    }
+
+                case TouchPhase.Stationary:
+                    {
+
+                        if (touch.position.x > Screen.width / 2)//right
+                        {
+                            direction.x = 1;
+                        }
+                        else if (touch.position.x < Screen.width / 2)//left
+                        {
+                            direction.x = -1;
+                        }
+
                         break;
                     }
             }
@@ -140,6 +135,12 @@ public class Player : MonoBehaviour
         //if (_zSpeed > 0)
         Move();
 
+    }
+
+    private void OnMouseDown()
+    {
+        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
+            Shoot();
     }
 
     /// <summary>
@@ -179,7 +180,7 @@ public class Player : MonoBehaviour
         {
             //player movement
             playerTransform.Translate((playerTransform.forward * _zSpeed + direction * _xSpeed) * Time.deltaTime);
-            debugText.text = "dir: " + direction.x + " " + (playerTransform.forward + direction) + touch.phase.ToString();
+            // debugText.text = "dir: " + direction.x + " " + (playerTransform.forward + direction) + touch.phase.ToString();
         }
     }
 
@@ -197,7 +198,7 @@ public class Player : MonoBehaviour
             ball.transform.SetParent(playerTransform);
 
             //Position from which is going to be shot
-            ball.transform.localPosition = new Vector3(0, 0, 1);
+            ball.transform.localPosition = new Vector3(0, 1, 1);
 
             //is added to the snowballs list
             snowBalls.Add(ball);
@@ -206,7 +207,7 @@ public class Player : MonoBehaviour
             {
                 if (snowBalls.Count % 5 == 0)
                     //TODO:HARDCODE
-                    StartCoroutine(IncreaseBall(.1f));
+                    StartCoroutine(IncreaseBall(.5f));
             }
             else
             {
@@ -277,16 +278,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Method to check if the player is touching move area
-    /// if it is not, it is touching shooting area
-    /// </summary>
-    /// <returns></returns>
-    bool isTouchingMovingArea()
-    {
-        return touch.position.y <= Screen.height / 3;
-    }
-
     public void RemoveSnowballs(int count)
     {
         if (GameManager.Instance.currentPhase == GameManager.GamePhase.RankingArea)
@@ -317,24 +308,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-    /* private void DecreaseBall(float scaleToDecrease)
-     {
-         int scalingFrames = 10;
-         //TODO:HARDCODE
-         if (visualBall.transform.localScale.x - scaleToDecrease > .1f)
-         {
-             // visualBall.transform.localScale -= new Vector3(scaleToDecrease, scaleToDecrease, scaleToDecrease);
-             Vector3.Lerp(visualBall.transform.localScale, visualBall.transform.localScale - new Vector3(scaleToDecrease, scaleToDecrease, scaleToDecrease),);
-
-         }
-         //TODO:HARDCODE
-         // visualBall.transform.localScale -= new Vector3(scaleToDecrease, scaleToDecrease, scaleToDecrease);
-         else
-             //visualBall.transform.localScale = new Vector3(.1f, .1f, .1f);
-             //Vector3.Lerp(visualBall.transform.localScale, new Vector3(.1f, .1f, .1f), 1);
-             //visualBall.transform.localScale = new Vector3(.1f, .1f, .1f);
-     }*/
 
     //TODO: HACER SCRIPT BALL
     IEnumerator IncreaseBall(float scaleToIncrease)
