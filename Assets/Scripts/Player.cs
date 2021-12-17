@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Player score
     /// </summary>
-    int score;
+    int _score;
 
     /// <summary>
     /// Force to impulse the bullets
@@ -62,6 +62,8 @@ public class Player : MonoBehaviour
 
     //DEBUG
     public Text debugText;
+
+    public int Score { get => _score;}
 
     // Start is called before the first frame update
     void Start()
@@ -182,7 +184,7 @@ public class Player : MonoBehaviour
     /// <param name="pointsToAdd"></param>
     public void AddPoints(int pointsToAdd, GameObject ball)
     {
-        score += pointsToAdd;
+        _score += pointsToAdd;
 
         if (ball)
         {

@@ -24,6 +24,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     int playerXSpeed;
 
+    int playerScore;
+
+    int multiplier = 0;
+
+    //TODO: UI CONTROLLER¿?
     [Header("UI references")]
     /// <summary>
     /// Reference to Title canvas
@@ -55,6 +60,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public string wallTagName;
 
+
     #region Singleton pattern
 
     static GameManager _instance;
@@ -75,6 +81,9 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    public int Multiplier { set => multiplier = value; }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -93,7 +102,7 @@ public class GameManager : MonoBehaviour
             if (player)
             {
                 //sets the speed
-                player.Initialise(playerZSpeed,playerXSpeed);
+                player.Initialise(playerZSpeed, playerXSpeed);
             }
             else
             {
@@ -142,7 +151,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndGame()
     {
-        if(EndUI)
+        if (EndUI)
         {
             //shows end menu
             EndUI.SetActive(true);
@@ -153,6 +162,9 @@ public class GameManager : MonoBehaviour
                 player.Stop();
 
                 //TODO: CANVAS bueno
+
+                //Sets the score of the player
+                playerScore = CalculateScore();
             }
             else
             {
@@ -172,4 +184,13 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    /// <summary>
+    /// Method to set the player score
+    /// </summary>
+    int CalculateScore()
+    {
+        return player.Score * multiplier;
+    }
+
 }
