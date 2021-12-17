@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
                 //TODO: CANVAS bueno
 
                 //Sets the score of the player
-                playerScore = CalculateScore();
+                playerScore += CalculateScore();
                 Debug.Log("PlayerScore " + playerScore);
             }
             else
