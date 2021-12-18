@@ -156,8 +156,8 @@ public class Player : MonoBehaviour
 
     private void OnMouseDown()
     {
-        /*if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
-            Shoot();*/
+        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
+            Shoot();
     }
 
     /// <summary>
@@ -223,6 +223,8 @@ public class Player : MonoBehaviour
             //Position from which is going to be shot
             ball.transform.localPosition = new Vector3(0, 1, 1);
 
+            ball.GetComponent<Ball>().isBullet = true;
+
             //is added to the snowballs list
             snowBalls.Add(ball);
 
@@ -232,12 +234,12 @@ public class Player : MonoBehaviour
                 //TODO:HARDCODE
                 visualBall.StartIncreasingBall(.5f);
 
-                if (GetComponent<SphereCollider>().radius < visualBall.GetParentSize() + .5f)
+               /* if (GetComponent<SphereCollider>().radius < visualBall.GetParentSize() + .5f)
                 {
                     GetComponent<SphereCollider>().radius = (visualBall.GetParentSize() + .5f) / 2;
                     GetComponent<SphereCollider>().center = new Vector3(0, visualBall.GetParentSize() / 2, 0);
                     //GetComponent<CapsuleCollider>().center += new Vector3(0, .05f, 0);
-                }
+                }*/
 
             }
             else
@@ -283,11 +285,11 @@ public class Player : MonoBehaviour
 
                     visualBall.StartDecreasingBall(.05f);
 
-                    if (GetComponent<SphereCollider>().radius > visualBall.GetParentSize() - .05f)
+                   /* if (GetComponent<SphereCollider>().radius > visualBall.GetParentSize() - .05f)
                     {
                         GetComponent<SphereCollider>().radius = (visualBall.GetParentSize() - .05f) / 2;
                         GetComponent<SphereCollider>().center = new Vector3(0, visualBall.GetParentSize() / 2, 0);
-                    }
+                    }*/
                 }
 
             }

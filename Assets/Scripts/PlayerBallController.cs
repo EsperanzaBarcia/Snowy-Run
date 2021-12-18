@@ -34,11 +34,13 @@ public class PlayerBallController : MonoBehaviour
 
     public void StartIncreasingBall(float scaleToIncrease)
     {
+        StopCoroutine(DecreaseBall(0));
         StartCoroutine(IncreaseBall(scaleToIncrease));
     }
 
     public void StartDecreasingBall(float scaleToDecrease)
     {
+        StopCoroutine(IncreaseBall(0));
         StartCoroutine(DecreaseBall(scaleToDecrease));
     }
 

@@ -11,6 +11,8 @@ public class Ball : MonoBehaviour
 
     public int Points { get => points; set => points = value; }
 
+    public bool isBullet;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,11 +30,13 @@ public class Ball : MonoBehaviour
     {
         //Adds points to player
         if(other.CompareTag("Player"))
-        {
-            other.GetComponent<Player>().AddPoints(points,gameObject);
-            gameObject.SetActive(false);
+        {  
+            if(!isBullet)
+            {
+                other.GetComponent<Player>().AddPoints(points, gameObject);
+                gameObject.SetActive(false);
+            }     
         }
-
         else if(other.CompareTag("Limit"))
         {
             gameObject.SetActive(false);
