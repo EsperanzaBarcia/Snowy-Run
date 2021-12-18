@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -20,9 +21,18 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public GameObject GameOverUI;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public GameObject TutorialUI;
 
+    /// <summary>
+    /// 
+    /// </summary>
     Animator tutorialAnimator;
+
+    public Text ScoreText;
+    public Text ballText;
 
     #region Singleton pattern
 
@@ -92,6 +102,9 @@ public class UIManager : MonoBehaviour
 
     public void ToggleTitleUI(bool show)
     {
+        ToggleMovingTutorial(false);
+        ToggleShootingTutorial(false);
+
         if (titleUI)
         {
             if (show)
@@ -109,6 +122,9 @@ public class UIManager : MonoBehaviour
 
     public void ToggleEndUI(bool show)
     {
+        ToggleMovingTutorial(false);
+        ToggleShootingTutorial(false);
+
         if (EndUI)
         {
             if (show)
@@ -126,6 +142,9 @@ public class UIManager : MonoBehaviour
 
     public void ToggleGameOverUI(bool show)
     {
+        ToggleMovingTutorial(false);
+        ToggleShootingTutorial(false);
+
         if (GameOverUI)
         {
             if (show)
@@ -138,5 +157,16 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogError("Game over UI not assigned");
         }
+    }
+
+
+    public void updateScore(int newScore)
+    {
+        ScoreText.text = newScore.ToString();
+    }
+
+    public void updateBalls(int newBalls)
+    {
+        ballText.text = newBalls.ToString();
     }
 }

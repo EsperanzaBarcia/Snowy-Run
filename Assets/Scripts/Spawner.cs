@@ -48,7 +48,7 @@ public class Spawner : MonoBehaviour
     void SpawnItems()
     {
         //max of iterations
-        int maxTimes = 5;
+        int maxTimes = 3;
         int times = 0;
 
         //from start to goal position
@@ -78,7 +78,8 @@ public class Spawner : MonoBehaviour
             //resets the position
             if ((int)transform.position.z == (int)(goal.transform.position.z - 2))
             {
-                transform.position = new Vector3(transform.position.x + 2, startPosition.y, startPosition.z);
+                //TODO:HARDCODE
+                transform.position = new Vector3(transform.position.x + 5, startPosition.y, startPosition.z);
                 i = (int)startPosition.z;
                 times++;
             }

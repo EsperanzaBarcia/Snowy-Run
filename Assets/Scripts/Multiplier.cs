@@ -12,6 +12,8 @@ public class Multiplier : MonoBehaviour
 
     public Text valueText;
 
+    public int snowballsToRemove;
+
     private void Start()
     {
         if(valueText)
@@ -31,7 +33,7 @@ public class Multiplier : MonoBehaviour
             GameManager.Instance.Multiplier = multiplyValue;
             //TODO:HARDCODE
             collision.gameObject.GetComponent<Player>().RemoveSnowballs(
-                5);
+                snowballsToRemove);
         }
     }
 }

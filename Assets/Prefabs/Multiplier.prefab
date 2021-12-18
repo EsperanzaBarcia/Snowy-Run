@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplyValue: 2
   valueText: {fileID: 9220736866670346410}
+  snowballsToRemove: 2
 --- !u!1 &3823443073318012770
 GameObject:
   m_ObjectHideFlags: 0

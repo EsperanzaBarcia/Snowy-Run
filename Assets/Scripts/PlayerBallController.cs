@@ -15,10 +15,22 @@ public class PlayerBallController : MonoBehaviour
 
     public float bigSize;
 
+    public SphereCollider playerCollider;
+
+    public float minimunColliderSize;
+    public Vector3 ColliderDefaultCenter;
+
     // Start is called before the first frame update
     void Start()
     {
+        playerCollider = transform.parent.parent.GetComponent<SphereCollider>();
 
+        if(playerCollider)
+        {
+            minimunColliderSize = playerCollider.radius;
+            ColliderDefaultCenter = playerCollider.center;
+        }
+      
     }
 
     // Update is called once per frame
@@ -29,24 +41,23 @@ public class PlayerBallController : MonoBehaviour
 
     public float GetParentSize()
     {
-        return transform.parent.localScale.x; 
+        return transform.parent.localScale.x;
     }
 
     public void StartIncreasingBall(float scaleToIncrease)
     {
-        StopCoroutine(DecreaseBall(0));
         StartCoroutine(IncreaseBall(scaleToIncrease));
     }
 
     public void StartDecreasingBall(float scaleToDecrease)
     {
-        StopCoroutine(IncreaseBall(0));
         StartCoroutine(DecreaseBall(scaleToDecrease));
     }
 
 
     IEnumerator IncreaseBall(float scaleToIncrease)
     {
+        Debug.Log("Increasing");
         float elapsedTime = 0;
         float seconds = .5f;
 
@@ -69,6 +80,17 @@ public class PlayerBallController : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
+        if (playerCollider)
+        {
+            if (playerCollider.radius < GetParentSize() + scaleToIncrease)
+            {
+                playerCollider.radius = (GetParentSize() + .5f) / 2;
+                playerCollider.center = new Vector3(0, GetParentSize() / 2, 0);
+                //GetComponent<CapsuleCollider>().center += new Vector3(0, .05f, 0);
+            }
+        }
+
     }
 
 
@@ -97,7 +119,22 @@ public class PlayerBallController : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-    }
 
+
+        if (playerCollider)
+        {
+            if (playerCollider.radius > GetParentSize() - scaleToDecrease && GetParentSize() - scaleToDecrease > minimunColliderSize)
+            {
+                playerCollider.radius = (GetParentSize() - scaleToDecrease) / 2;
+                playerCollider.center = new Vector3(0, GetParentSize() / 2, 0);
+            }
+            else
+            {
+                playerCollider.radius = minimunColliderSize;
+                playerCollider.center = new Vector3(0, GetParentSize() / 2, 0);
+            }
+        }
+
+    }
 
 }

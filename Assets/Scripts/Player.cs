@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Force to impulse the bullets
     /// </summary>
-    int bulletForce = 15;
+    int bulletForce = 5;
 
     /// <summary>
     /// List of ready bullets to shoot
@@ -215,32 +215,29 @@ public class Player : MonoBehaviour
 
         _score += pointsToAdd;
 
+        UIManager.Instance.updateScore(_score);
+
         if (ball)
         {
             //Now the player is the parent
             ball.transform.SetParent(playerTransform);
 
+            //TODO:HARDCODE
             //Position from which is going to be shot
-            ball.transform.localPosition = new Vector3(0, 1, 1);
+            ball.transform.localPosition = new Vector3(0, visualCharacter.transform.localPosition.y + 3, 1);
 
             ball.GetComponent<Ball>().isBullet = true;
 
             //is added to the snowballs list
             snowBalls.Add(ball);
 
+            UIManager.Instance.updateBalls(snowBalls.Count);
+
             if (visualBall)
             {
                 //if (snowBalls.Count % 5 == 0)
                 //TODO:HARDCODE
                 visualBall.StartIncreasingBall(.5f);
-
-               /* if (GetComponent<SphereCollider>().radius < visualBall.GetParentSize() + .5f)
-                {
-                    GetComponent<SphereCollider>().radius = (visualBall.GetParentSize() + .5f) / 2;
-                    GetComponent<SphereCollider>().center = new Vector3(0, visualBall.GetParentSize() / 2, 0);
-                    //GetComponent<CapsuleCollider>().center += new Vector3(0, .05f, 0);
-                }*/
-
             }
             else
             {
@@ -282,14 +279,16 @@ public class Player : MonoBehaviour
 
                     //Removes the ball from the list and sorts it to use next
                     snowBalls.Remove(tempBullet);
+                    
+                    visualBall.StartDecreasingBall(.5f);
 
-                    visualBall.StartDecreasingBall(.05f);
+                    UIManager.Instance.updateBalls(snowBalls.Count);
 
-                   /* if (GetComponent<SphereCollider>().radius > visualBall.GetParentSize() - .05f)
-                    {
-                        GetComponent<SphereCollider>().radius = (visualBall.GetParentSize() - .05f) / 2;
-                        GetComponent<SphereCollider>().center = new Vector3(0, visualBall.GetParentSize() / 2, 0);
-                    }*/
+                    /* if (GetComponent<SphereCollider>().radius > visualBall.GetParentSize() - .05f)
+                     {
+                         GetComponent<SphereCollider>().radius = (visualBall.GetParentSize() - .05f) / 2;
+                         GetComponent<SphereCollider>().center = new Vector3(0, visualBall.GetParentSize() / 2, 0);
+                     }*/
                 }
 
             }
@@ -359,6 +358,8 @@ public class Player : MonoBehaviour
 
                 GameManager.Instance.EndGame();
             }
+
+            UIManager.Instance.updateBalls(snowBalls.Count);
         }
         else
         {
