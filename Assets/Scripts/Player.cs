@@ -76,9 +76,9 @@ public class Player : MonoBehaviour
     int touches;
 
     /// <summary>
-    /// Bool to check if the player has shooted
+    /// Variable to check if this are the first touches of the user
     /// </summary>
-    bool firstShot;
+    int shots;
 
     public int Score { get => _score; }
 
@@ -122,7 +122,9 @@ public class Player : MonoBehaviour
                         startPosition = Vector2.zero;
 
                         if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay && touch.position.y > Screen.width / 2)
+                        {
                             Shoot();
+                        }
 
                         break;
                     }
@@ -200,7 +202,7 @@ public class Player : MonoBehaviour
         if (playerTransform)
         {
             //player movement
-            playerTransform.Translate((playerTransform.forward * _zSpeed + direction * _xSpeed) * Time.deltaTime);  
+            playerTransform.Translate((playerTransform.forward * _zSpeed + direction * _xSpeed) * Time.deltaTime);
         }
     }
 
@@ -210,13 +212,8 @@ public class Player : MonoBehaviour
     /// <param name="pointsToAdd"></param>
     public void AddPoints(int pointsToAdd, GameObject ball)
     {
-        //Checks if the player has shooted
-        if (!firstShot)
-        {
-            //shows tutorial
+        if (shots < 2)
             UIManager.Instance.ToggleShootingTutorial(true);
-            firstShot = true;
-        }
 
         //Increases score and shows it
         _score += pointsToAdd;
@@ -263,7 +260,12 @@ public class Player : MonoBehaviour
     /// </summary>
     public void Shoot()
     {
-        Debug.Log("shoot");
+        //Debug.LogError("shoot");
+        shots++;
+        if (shots > 2)
+        {
+            UIManager.Instance.ToggleShootingTutorial(false);
+        }
 
         if (snowBalls.Count > 0)
         {
@@ -280,7 +282,7 @@ public class Player : MonoBehaviour
                 if (tempRb)
                 {
                     //Applies the impulse
-                    tempRb.AddForce(bulletForce * tempBullet.transform.forward, ForceMode.Impulse);
+                    tempRb.AddForce(bulletForce * Vector3.forward, ForceMode.Impulse);
                     tempRb.useGravity = true;
 
                     //Removes the ball from the list and sorts it to use next
@@ -294,8 +296,6 @@ public class Player : MonoBehaviour
                 }
 
             }
-
-            UIManager.Instance.ToggleShootingTutorial(false);
         }
 
     }

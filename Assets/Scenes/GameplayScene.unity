@@ -6178,13 +6178,17 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 930388512832683960, guid: f60a4ba41a4c44749891074152581109, type: 3}
+      propertyPath: bigSize
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1647407520898044468, guid: f60a4ba41a4c44749891074152581109, type: 3}
       propertyPath: m_Center.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3887141729741853934, guid: f60a4ba41a4c44749891074152581109, type: 3}
       propertyPath: bulletForce
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4819250640915268809, guid: f60a4ba41a4c44749891074152581109, type: 3}
       propertyPath: m_Name
