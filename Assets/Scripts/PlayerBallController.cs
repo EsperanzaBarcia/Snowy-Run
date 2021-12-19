@@ -11,6 +11,11 @@ using UnityEngine;
 public class PlayerBallController : MonoBehaviour
 {
     /// <summary>
+    /// Collider offset
+    /// </summary>
+    float colliderYOffset = .2f;
+
+    /// <summary>
     /// Max possible size of the ball, setted by inspector
     /// </summary>
     public float maxSize;
@@ -117,7 +122,7 @@ public class PlayerBallController : MonoBehaviour
         if (currentScale.x + scaleToIncrease <= maxSize)
         {
             finalScale = currentScale + new Vector3(scaleToIncrease, scaleToIncrease, scaleToIncrease);
-        }        
+        }
         else
         {
             finalScale = new Vector3(maxSize, maxSize, maxSize);
@@ -133,7 +138,7 @@ public class PlayerBallController : MonoBehaviour
 
         //if the ball is on big ball mode, changes material
         if (transform.parent.localScale.x >= bigSize)
-        {       
+        {
             meshRenderer.material = bigBallMaterial;
         }
 
@@ -143,8 +148,8 @@ public class PlayerBallController : MonoBehaviour
             //TODO:HARDCODE
             if (playerCollider.radius < GetParentSize() + scaleToIncrease)
             {
-                playerCollider.radius = (GetParentSize() + .5f) / 2;
-                playerCollider.center = new Vector3(0, GetParentSize() / 2, 0);
+                playerCollider.radius = (GetParentSize()) / 2 - colliderYOffset;
+                playerCollider.center = new Vector3(0, playerCollider.radius - colliderYOffset, 0); /*new Vector3(0, GetParentSize() / 2, 0);*/
                 //GetComponent<CapsuleCollider>().center += new Vector3(0, .05f, 0);
             }
         }
@@ -158,8 +163,8 @@ public class PlayerBallController : MonoBehaviour
     /// <param name="scaleToDecrease"></param>
     /// <returns></returns>
     IEnumerator DecreaseBall(float scaleToDecrease)
-    {  
-       
+    {
+
         float elapsedTime = 0;
         //Duration of transition
         float seconds = .5f;
@@ -199,17 +204,8 @@ public class PlayerBallController : MonoBehaviour
         //Modifies player collider to fit with visual feedback
         if (playerCollider)
         {
-            //TODO:HARDCODE
-            if (playerCollider.radius > GetParentSize() - scaleToDecrease && GetParentSize() - scaleToDecrease > minimunColliderSize)
-            {
-                playerCollider.radius = (GetParentSize() - scaleToDecrease) / 2;
-                playerCollider.center = new Vector3(0, GetParentSize() / 2, 0);
-            }
-            else
-            {
-                playerCollider.radius = minimunColliderSize;
-                playerCollider.center = new Vector3(0, GetParentSize() / 2, 0);
-            }
+            playerCollider.radius = (GetParentSize()) / 2 - colliderYOffset;
+            playerCollider.center = new Vector3(0, playerCollider.radius - colliderYOffset, 0);        
         }
 
     }

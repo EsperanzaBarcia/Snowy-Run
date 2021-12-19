@@ -121,7 +121,7 @@ public class Player : MonoBehaviour
                         direction.x = 0;
                         startPosition = Vector2.zero;
 
-                        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay && touch.position.y > Screen.width / 3)
+                        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay && touch.position.y > Screen.width / 2)
                             Shoot();
 
                         break;
