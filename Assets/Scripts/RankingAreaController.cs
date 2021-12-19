@@ -52,7 +52,7 @@ public class RankingAreaController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //if the player is colliding, ssets the game phase
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(GameManager.Instance.playerTagName))
         {
             GameManager.Instance.StartRankingArea();
         }

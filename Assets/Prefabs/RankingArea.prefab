@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7279662793770723769}
   m_Layer: 0
   m_Name: RankingArea
-  m_TagString: RankingArea
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -201,7 +201,7 @@ PrefabInstance:
       objectReference: {fileID: 1941101940304322205}
     - target: {fileID: 3118534853043188021, guid: f4ed1783e7a597b42987f8d20bcae198, type: 3}
       propertyPath: multiplyValue
-      value: 2
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3118534853043188024, guid: f4ed1783e7a597b42987f8d20bcae198, type: 3}
       propertyPath: m_Name

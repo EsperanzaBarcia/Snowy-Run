@@ -73,8 +73,18 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //sets references
-        tutorialAnimator = TutorialUI.GetComponent<Animator>();
+        if(TutorialUI)
+        {
+            //sets references
+            tutorialAnimator = TutorialUI.GetComponent<Animator>();
+        }
+        else
+        {
+            Debug.LogError("Tutorial UI not assigned");
+        }
+
+       
+
     }
 
     /// <summary>

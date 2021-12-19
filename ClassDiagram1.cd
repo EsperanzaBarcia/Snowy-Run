@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ball">
+    <Position X="3.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Ball.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterController">
+    <Position X="6.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AASAAAAAACCAAAAAAAAAAAAAAgAAAAAAAAAAAgAAAAI=</HashCode>
+      <FileName>Assets\Scripts\CharacterController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FollowCameraScript">
+    <Position X="0.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAIAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\FollowCameraScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager">
+    <Position X="0.75" Y="2.5" Width="2.25" />
+    <NestedTypes>
+      <Enum Name="GameManager.GamePhase" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\GameManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABAMgAABAiAAIACAAEAAgABoAAgAAAABQAAAAAAQgEA=</HashCode>
+      <FileName>Assets\Scripts\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Multiplier">
+    <Position X="8.75" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAACAAAAEAAAAAAAAAAAAAEAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multiplier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player">
+    <Position X="6.25" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAOAwJwgAQAAAADAIAAAAAgAIcAAQEAAAAQA=</HashCode>
+      <FileName>Assets\Scripts\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerBallController">
+    <Position X="3.25" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIgGAIAAAAAAEICCAABAACBAGAAAAAAAAAAgg=</HashCode>
+      <FileName>Assets\Scripts\PlayerBallController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RankingAreaController">
+    <Position X="8.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAACAAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAA=</HashCode>
+      <FileName>Assets\Scripts\RankingAreaController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UIManager">
+    <Position X="0.75" Y="8.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAEAAAgADAAAACBAAEAEAAAAAACAABEQAACAOIIAEA=</HashCode>
+      <FileName>Assets\Scripts\UIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wall">
+    <Position X="3.25" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Wall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -42,6 +42,11 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Tag asigned to goal gameobject
     /// </summary>
+    public string playerTagName;
+
+    /// <summary>
+    /// Tag asigned to goal gameobject
+    /// </summary>
     public string goalTagName;
 
     /// <summary>
@@ -53,6 +58,12 @@ public class GameManager : MonoBehaviour
     /// Tag asigned to wall gameobject
     /// </summary>
     public string wallTagName;
+
+    /// <summary>
+    /// Tag asigned to wall gameobject
+    /// </summary>
+    public string limitTagName;
+
 
     /// <summary>
     /// Enum to check the current game phase

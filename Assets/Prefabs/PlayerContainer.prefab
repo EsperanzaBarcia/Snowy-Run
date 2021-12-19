@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1278352059}
   m_LocalRotation: {x: -0.5, y: 0.50000006, z: 0.5000001, w: 0.49999994}
-  m_LocalPosition: {x: -0.12995858, y: 0.76453775, z: 0}
+  m_LocalPosition: {x: -0.13, y: 1.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2746835529975087776}
@@ -1184,10 +1184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4adff55c1a86943a050c04db4efccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletForce: 10
-  shootPosition: {fileID: 0}
+  bulletForce: 40
+  shootPosition: {fileID: 1278352060}
   visualBall: {fileID: 930388512832683960}
-  characterScript: {fileID: 0}
+  characterScript: {fileID: 3887141730045705149}
 --- !u!95 &3887141729741853922
 Animator:
   serializedVersion: 3
