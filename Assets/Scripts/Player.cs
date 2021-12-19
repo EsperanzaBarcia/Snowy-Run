@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Force to impulse the bullets
     /// </summary>
-    int bulletForce = 5;
+    int bulletForce = 15;
 
     /// <summary>
     /// List of ready bullets to shoot
@@ -156,8 +156,8 @@ public class Player : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
-            Shoot();
+        /*if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
+            Shoot();*/
     }
 
     /// <summary>
