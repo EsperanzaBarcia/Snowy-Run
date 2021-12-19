@@ -18,19 +18,29 @@ public class PlayerBallController : MonoBehaviour
     public SphereCollider playerCollider;
 
     public float minimunColliderSize;
+
     public Vector3 ColliderDefaultCenter;
+
+    MeshRenderer meshRenderer;
+
+    Material defaultBallMaterial;
+
+    public Material bigBallMaterial;
 
     // Start is called before the first frame update
     void Start()
     {
         playerCollider = transform.parent.parent.GetComponent<SphereCollider>();
 
-        if(playerCollider)
+        if (playerCollider)
         {
             minimunColliderSize = playerCollider.radius;
             ColliderDefaultCenter = playerCollider.center;
         }
-      
+
+        meshRenderer = GetComponent<MeshRenderer>();
+        defaultBallMaterial = meshRenderer.material;
+
     }
 
     // Update is called once per frame
@@ -74,11 +84,16 @@ public class PlayerBallController : MonoBehaviour
             finalScale = new Vector3(maxSize, maxSize, maxSize);
         }
 
-        while (elapsedTime < 1)
+        while (elapsedTime < seconds)
         {
             transform.parent.localScale = Vector3.Lerp(currentScale, finalScale, elapsedTime / seconds);
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
+        }
+
+        if (transform.parent.localScale.x >= bigSize)
+        {       
+            meshRenderer.material = bigBallMaterial;
         }
 
         if (playerCollider)
@@ -113,13 +128,17 @@ public class PlayerBallController : MonoBehaviour
             finalScale = new Vector3(minSize, minSize, minSize);
         }
 
-        while (elapsedTime < 1)
+        while (elapsedTime < seconds)
         {
             transform.parent.localScale = Vector3.Lerp(currentScale, finalScale, elapsedTime / seconds);
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
+        if (transform.parent.localScale.x < bigSize)
+        {
+            meshRenderer.material = defaultBallMaterial;
+        }
 
         if (playerCollider)
         {

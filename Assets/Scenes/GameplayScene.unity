@@ -5927,7 +5927,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 8361838539902190536}
-  offset: {x: 0, y: -8.52, z: 20}
+  offset: {x: 0, y: -8.52, z: 25}
 --- !u!4 &8579511368929018295
 Transform:
   m_ObjectHideFlags: 0
@@ -6010,6 +6010,10 @@ PrefabInstance:
       propertyPath: bigSize
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 930388512832683960, guid: f60a4ba41a4c44749891074152581109, type: 3}
+      propertyPath: bigBallMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: ddeda1e2c034d844cb0d8d9bee7d32d2, type: 2}
     - target: {fileID: 930388513081113308, guid: f60a4ba41a4c44749891074152581109, type: 3}
       propertyPath: m_Direction
       value: 1
@@ -6026,6 +6030,18 @@ PrefabInstance:
       propertyPath: debugText
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3887141730061848965, guid: f60a4ba41a4c44749891074152581109, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3887141730061848965, guid: f60a4ba41a4c44749891074152581109, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 3887141730061848965, guid: f60a4ba41a4c44749891074152581109, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4819250640915268809, guid: f60a4ba41a4c44749891074152581109, type: 3}
       propertyPath: m_Name
       value: PlayerContainer
