@@ -30,16 +30,20 @@ public class RankingAreaController : MonoBehaviour
 
             } while (previousMaterial == randomMaterial);
 
-            transform.GetChild(i).GetComponent<MeshRenderer>().material = randomMaterial;
+            MeshRenderer currentMeshRenderer = transform.GetChild(i).GetComponent<MeshRenderer>();
+            if (currentMeshRenderer)
+            {
+                transform.GetChild(i).GetComponent<MeshRenderer>().material = randomMaterial;
 
-            previousMaterial = randomMaterial;
+                previousMaterial = randomMaterial;
 
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
 
             GameManager.Instance.startRankingArea();

@@ -301,6 +301,12 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag(GameManager.Instance.goalTagName))
         {
+
+            if (characterScript)
+            {
+                characterScript.Success();
+            }
+
             GameManager.Instance.EndGame();
         }
     }
@@ -319,6 +325,11 @@ public class Player : MonoBehaviour
             }
             else
             {
+                if (characterScript)
+                {
+                    characterScript.Defeat();
+                }
+
                 GameManager.Instance.GameOver();
             }
 

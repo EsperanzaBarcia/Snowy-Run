@@ -38,7 +38,7 @@ public class CharacterController : MonoBehaviour
     {
         if (characterAnimator)
         {
-
+            characterAnimator.SetBool("Defeated", true);
         }
     }
 
@@ -46,7 +46,7 @@ public class CharacterController : MonoBehaviour
     {
         if (characterAnimator)
         {
-
+            characterAnimator.SetBool("Success", true);
         }
     }
 

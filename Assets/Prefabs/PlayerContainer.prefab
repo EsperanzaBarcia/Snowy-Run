@@ -1187,7 +1187,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!1 &3887141730045705144
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,6 +1270,7 @@ GameObject:
   - component: {fileID: 3887141730061848965}
   - component: {fileID: 3887141730061848962}
   - component: {fileID: 930388512832683960}
+  - component: {fileID: 1407391259}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -1373,7 +1374,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSize: 6
   minSize: 0.1
-  bigSize: 3
+  bigSize: 2.5
+  playerCollider: {fileID: 0}
+  minimunColliderSize: 0
+  ColliderDefaultCenter: {x: 0, y: 0, z: 0}
+  bigBallMaterial: {fileID: 2100000, guid: ddeda1e2c034d844cb0d8d9bee7d32d2, type: 2}
+--- !u!135 &1407391259
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3887141730061848960}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.47707975
+  m_Center: {x: -0.000000044703484, y: -0.00000047683716, z: -0.00000010430813}
 --- !u!1 &4819250640915268809
 GameObject:
   m_ObjectHideFlags: 0
