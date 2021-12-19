@@ -103,19 +103,21 @@ public class GameManager : MonoBehaviour
         //disables initial canvas
         UIManager.Instance.ToggleTitleUI(false);
 
+        //enables moving tutorial canvas
+        UIManager.Instance.ToggleMovingTutorial(true);
+
         if (player)
         {
             //sets the speed
             player.Initialise(playerZSpeed, playerXSpeed);
             currentPhase = GamePhase.Gameplay;
 
-            //enables moving tutorial canvas
-            UIManager.Instance.ToggleMovingTutorial(true);
         }
         else
         {
             Debug.LogError("Player is not asigned");
         }
+
     }
 
     /// <summary>

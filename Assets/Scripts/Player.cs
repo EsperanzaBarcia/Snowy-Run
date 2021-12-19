@@ -73,12 +73,12 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Variable to check if this are the first touches of the user
     /// </summary>
-    int touches;
+    int touches = 0;
 
     /// <summary>
     /// Variable to check if this are the first touches of the user
     /// </summary>
-    int shots;
+    bool firstShot = true;
 
     public int Score { get => _score; }
 
@@ -131,16 +131,7 @@ public class Player : MonoBehaviour
 
                 case TouchPhase.Stationary:
                     {
-                        //counts touches to show tutorial
-                        if (touches < 2)
-                        {
-                            touches++;
-                        }
-                        else
-                        {
-                            //Shows moving tutorial
-                            UIManager.Instance.ToggleMovingTutorial(false);
-                        }
+
 
                         if (touch.position.x > Screen.width / 2 && touch.position.y <= Screen.width / 2)//right
                         {
@@ -163,7 +154,7 @@ public class Player : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Shoot();
+        //Shoot();
     }
     /// <summary>
     /// Method to start moving the player
@@ -212,8 +203,12 @@ public class Player : MonoBehaviour
     /// <param name="pointsToAdd"></param>
     public void AddPoints(int pointsToAdd, GameObject ball)
     {
-        if (shots < 2)
+        if (firstShot)
+        {
+            //UIManager.Instance.ToggleMovingTutorial(false);
             UIManager.Instance.ToggleShootingTutorial(true);
+            firstShot = false;
+        }
 
         //Increases score and shows it
         _score += pointsToAdd;
@@ -261,12 +256,6 @@ public class Player : MonoBehaviour
     public void Shoot()
     {
         //Debug.LogError("shoot");
-        shots++;
-        if (shots > 2)
-        {
-            UIManager.Instance.ToggleShootingTutorial(false);
-        }
-
         if (snowBalls.Count > 0)
         {
             //Gets the first ball available
@@ -292,6 +281,9 @@ public class Player : MonoBehaviour
                     visualBall.StartDecreasingBall(.5f);
 
                     UIManager.Instance.updateBalls(snowBalls.Count);
+
+                    if (!firstShot)
+                        UIManager.Instance.ToggleShootingTutorial(false);
 
                 }
 
@@ -371,8 +363,9 @@ public class Player : MonoBehaviour
                 //decreases visual ball
                 visualBall.StartDecreasingBall(.5f);
             }
-            else
+            if (snowBalls.Count == 0)
             {
+
                 //Clears list, decreases the ball and ends game
                 snowBalls.Clear();
 
