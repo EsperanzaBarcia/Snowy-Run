@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Reference to character
     /// </summary>
-    public GameObject visualCharacter;
+    public Transform shootPosition;
 
     /// <summary>
     /// Reference to ball
@@ -68,12 +68,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Reference to character controller to handle animations
     /// </summary>
-    CharacterController characterScript;
-
-    /// <summary>
-    /// Variable to check if this are the first touches of the user
-    /// </summary>
-    int touches = 0;
+    public CharacterController characterScript;
 
     /// <summary>
     /// Variable to check if this are the first touches of the user
@@ -86,11 +81,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerTransform = GetComponent<Transform>();
-
-        if (visualCharacter)
-        {
-            characterScript = visualCharacter.GetComponent<CharacterController>();
-        }
 
         if (!visualBall)
             Debug.LogError("Visual ball is not asigned");
@@ -154,7 +144,7 @@ public class Player : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //Shoot();
+        Shoot();
     }
     /// <summary>
     /// Method to start moving the player
@@ -205,7 +195,6 @@ public class Player : MonoBehaviour
     {
         if (firstShot)
         {
-            //UIManager.Instance.ToggleMovingTutorial(false);
             UIManager.Instance.ToggleShootingTutorial(true);
             firstShot = false;
         }
@@ -218,11 +207,11 @@ public class Player : MonoBehaviour
         if (ball)
         {
             //Now the player is the parent
-            ball.transform.SetParent(playerTransform);
+            ball.transform.SetParent(shootPosition);
 
             //TODO:HARDCODE
             //Position from which is going to be shot
-            ball.transform.localPosition = new Vector3(0, visualCharacter.transform.localPosition.y + 3, 1);
+            ball.transform.localPosition = Vector3.zero;
 
             //sets the ball as bullet
             ball.GetComponent<Ball>().isBullet = true;
@@ -255,6 +244,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void Shoot()
     {
+        Debug.LogError("Shoot");
         //Debug.LogError("shoot");
         if (snowBalls.Count > 0)
         {
@@ -270,8 +260,9 @@ public class Player : MonoBehaviour
 
                 if (tempRb)
                 {
+                    tempBullet.transform.SetParent(null);
                     //Applies the impulse
-                    tempRb.AddForce(bulletForce * Vector3.forward, ForceMode.Impulse);
+                    tempRb.AddForce(bulletForce * shootPosition.transform.forward, ForceMode.Impulse);
                     tempRb.useGravity = true;
 
                     //Removes the ball from the list and sorts it to use next

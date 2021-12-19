@@ -21,7 +21,6 @@ public class Ball : MonoBehaviour
     /// </summary>
     public bool isBullet;
 
-
     private void OnTriggerEnter(Collider other)
     {
         //Adds points to player in the case the ball is not used as bullet
@@ -30,17 +29,23 @@ public class Ball : MonoBehaviour
             if(!isBullet)
             {
                 other.GetComponent<Player>().AddPoints(points, gameObject);
-                gameObject.SetActive(false);
+                DisableMyself();
             }     
         }
         //disables itself once is shot
         else if(other.CompareTag("Limit"))
         {
-            gameObject.SetActive(false);
+            DisableMyself();
         }
         else if (other.CompareTag("Wall"))
         {
+            DisableMyself();
             other.GetComponent<Wall>().DestroyWall();
         }
+    }
+
+    void DisableMyself()
+    {
+        gameObject.SetActive(false);
     }
 }
