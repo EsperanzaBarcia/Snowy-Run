@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Force to impulse the bullets
     /// </summary>
-    int bulletForce = 15;
+    public int bulletForce = 15;
 
     /// <summary>
     /// List of ready bullets to shoot
@@ -159,6 +159,10 @@ public class Player : MonoBehaviour
 
     }
 
+    private void OnMouseDown()
+    {
+        Shoot();
+    }
     /// <summary>
     /// Method to start moving the player
     /// </summary>
@@ -291,9 +295,9 @@ public class Player : MonoBehaviour
 
             }
 
+            UIManager.Instance.ToggleShootingTutorial(false);
         }
 
-        UIManager.Instance.ToggleShootingTutorial(false);
     }
 
     private void OnTriggerEnter(Collider other)

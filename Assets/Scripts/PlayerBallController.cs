@@ -33,12 +33,17 @@ public class PlayerBallController : MonoBehaviour
     /// <summary>
     /// Reference to player collider
     /// </summary>
-    public SphereCollider playerCollider;
+    SphereCollider playerCollider;
 
     /// <summary>
     /// Minimum size of player collider
     /// </summary>
-    public float minimunColliderSize;
+    float minimunColliderSize;
+
+    /// <summary>
+    /// Minimum size of player collider
+    /// </summary>
+    Vector3 startColliderCenter;
 
     /// <summary>
     /// Gameobject mesh renderer to change material
@@ -65,6 +70,7 @@ public class PlayerBallController : MonoBehaviour
         if (playerCollider)
         {
             minimunColliderSize = playerCollider.radius;
+            startColliderCenter = playerCollider.center;
         }
 
         meshRenderer = GetComponent<MeshRenderer>();
@@ -145,8 +151,8 @@ public class PlayerBallController : MonoBehaviour
         //Modifies player collider to fit with visual feedback
         if (playerCollider)
         {
-            //TODO:HARDCODE
-            if (playerCollider.radius < GetParentSize() + scaleToIncrease)
+
+            if (playerCollider.radius < (GetParentSize()) / 2 - colliderYOffset)
             {
                 playerCollider.radius = (GetParentSize()) / 2 - colliderYOffset;
                 playerCollider.center = new Vector3(0, playerCollider.radius - colliderYOffset, 0); /*new Vector3(0, GetParentSize() / 2, 0);*/
@@ -201,12 +207,23 @@ public class PlayerBallController : MonoBehaviour
             meshRenderer.material = defaultBallMaterial;
         }
 
-        //Modifies player collider to fit with visual feedback
+        //Modifies player collider to fit with visual feedback 
         if (playerCollider)
         {
-            playerCollider.radius = (GetParentSize()) / 2 - colliderYOffset;
-            playerCollider.center = new Vector3(0, playerCollider.radius - colliderYOffset, 0);        
+            //checks if collider is on min size
+            if ((GetParentSize()) / 2 - colliderYOffset >= minimunColliderSize)
+            {
+                playerCollider.radius = (GetParentSize()) / 2 - colliderYOffset;
+                playerCollider.center = new Vector3(0, playerCollider.radius - colliderYOffset, 0);
+            }
+            else
+            {
+                playerCollider.radius = minimunColliderSize;
+                playerCollider.center = startColliderCenter;
+            }
+
         }
+
 
     }
 

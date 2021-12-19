@@ -157,9 +157,6 @@ public class UIManager : MonoBehaviour
     /// <param name="show"></param>
     public void ToggleEndUI(bool show)
     {
-        ToggleMovingTutorial(false);
-        ToggleShootingTutorial(false);
-
         if (EndUI)
         {
             if (show)
@@ -180,9 +177,6 @@ public class UIManager : MonoBehaviour
     /// <param name="show"></param>
     public void ToggleGameOverUI(bool show)
     {
-        ToggleMovingTutorial(false);
-        ToggleShootingTutorial(false);
-
         if (GameOverUI)
         {
             if (show)
