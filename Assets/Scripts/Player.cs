@@ -1,3 +1,8 @@
+/**
+ * 
+ * Created by Esperanza Barcia DEC 2021
+ * 
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,11 +37,11 @@ public class Player : MonoBehaviour
 
     /// <summary>
     /// List of ready bullets to shoot
-    /// </summary> //TODO:PONER PRIVADA
-    public List<GameObject> snowBalls = new List<GameObject>();
+    /// </summary>
+    List<GameObject> snowBalls = new List<GameObject>();
 
     /// <summary>
-    /// 
+    /// Variable to save touches
     /// </summary>
     Touch touch;
 
@@ -61,7 +66,7 @@ public class Player : MonoBehaviour
     public PlayerBallController visualBall;
 
     /// <summary>
-    /// 
+    /// Reference to character controller to handle animations
     /// </summary>
     CharacterController characterScript;
 
@@ -70,6 +75,9 @@ public class Player : MonoBehaviour
     /// </summary>
     int touches;
 
+    /// <summary>
+    /// Bool to check if the player has shooted
+    /// </summary>
     bool firstShot;
 
     public int Score { get => _score; }
@@ -78,7 +86,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerTransform = GetComponent<Transform>();
-        //TODO:Empezar con una cierta cantidad de bolas
 
         if (visualCharacter)
         {
@@ -99,8 +106,6 @@ public class Player : MonoBehaviour
             touch = Input.GetTouch(0);
             Vector2 startPosition = Vector2.zero;
 
-            //Otherwise, moves 
-
             switch (touch.phase)
             {
                 //saves the touch if it is the moving area
@@ -110,27 +115,28 @@ public class Player : MonoBehaviour
 
                         break;
                     }
-                //Stops moving and if is on shooting area shoots
+                //Stops moving and if it is on shooting area, shoots
                 case TouchPhase.Ended:
                     {
                         direction.x = 0;
                         startPosition = Vector2.zero;
 
-                        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay && touch.position.y > Screen.width / 2)
+                        if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay && touch.position.y > Screen.width / 3)
                             Shoot();
-                        //if its on play mode and not moving shoots
 
                         break;
                     }
 
                 case TouchPhase.Stationary:
                     {
+                        //counts touches to show tutorial
                         if (touches < 2)
                         {
                             touches++;
                         }
                         else
                         {
+                            //Shows moving tutorial
                             UIManager.Instance.ToggleMovingTutorial(false);
                         }
 
@@ -149,15 +155,8 @@ public class Player : MonoBehaviour
         }
 
         //The player always moves forwards
-        //if (_zSpeed > 0)
         Move();
 
-    }
-
-    private void OnMouseDown()
-    {
-        /*if (GameManager.Instance.currentPhase == GameManager.GamePhase.Gameplay)
-            Shoot();*/
     }
 
     /// <summary>
@@ -173,6 +172,7 @@ public class Player : MonoBehaviour
 
         if (characterScript)
         {
+            //calls animation
             characterScript.Run();
         }
 
@@ -196,8 +196,7 @@ public class Player : MonoBehaviour
         if (playerTransform)
         {
             //player movement
-            playerTransform.Translate((playerTransform.forward * _zSpeed + direction * _xSpeed) * Time.deltaTime);
-            // debugText.text = "dir: " + direction.x + " " + (playerTransform.forward + direction) + touch.phase.ToString();
+            playerTransform.Translate((playerTransform.forward * _zSpeed + direction * _xSpeed) * Time.deltaTime);  
         }
     }
 
@@ -207,12 +206,15 @@ public class Player : MonoBehaviour
     /// <param name="pointsToAdd"></param>
     public void AddPoints(int pointsToAdd, GameObject ball)
     {
+        //Checks if the player has shooted
         if (!firstShot)
         {
+            //shows tutorial
             UIManager.Instance.ToggleShootingTutorial(true);
             firstShot = true;
         }
 
+        //Increases score and shows it
         _score += pointsToAdd;
 
         UIManager.Instance.updateScore(_score);
@@ -226,16 +228,16 @@ public class Player : MonoBehaviour
             //Position from which is going to be shot
             ball.transform.localPosition = new Vector3(0, visualCharacter.transform.localPosition.y + 3, 1);
 
+            //sets the ball as bullet
             ball.GetComponent<Ball>().isBullet = true;
 
-            //is added to the snowballs list
+            //is added to the snowballs list and showed
             snowBalls.Add(ball);
 
             UIManager.Instance.updateBalls(snowBalls.Count);
 
             if (visualBall)
             {
-                //if (snowBalls.Count % 5 == 0)
                 //TODO:HARDCODE
                 visualBall.StartIncreasingBall(.5f);
             }
@@ -279,34 +281,31 @@ public class Player : MonoBehaviour
 
                     //Removes the ball from the list and sorts it to use next
                     snowBalls.Remove(tempBullet);
-                    
+
+                    //Changes the ball visually and updates UI
                     visualBall.StartDecreasingBall(.5f);
 
                     UIManager.Instance.updateBalls(snowBalls.Count);
 
-                    /* if (GetComponent<SphereCollider>().radius > visualBall.GetParentSize() - .05f)
-                     {
-                         GetComponent<SphereCollider>().radius = (visualBall.GetParentSize() - .05f) / 2;
-                         GetComponent<SphereCollider>().center = new Vector3(0, visualBall.GetParentSize() / 2, 0);
-                     }*/
                 }
 
             }
 
-            UIManager.Instance.ToggleShootingTutorial(false);
         }
+
+        UIManager.Instance.ToggleShootingTutorial(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(GameManager.Instance.goalTagName))
         {
-
             if (characterScript)
             {
+                //Calls animation
                 characterScript.Success();
             }
-
+            //Ends game
             GameManager.Instance.EndGame();
         }
     }
@@ -316,7 +315,7 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag(GameManager.Instance.wallTagName))
         {
-            //TODO:HARDCODE
+            //Breaks the wall if the ball is on big mode
             if (visualBall.GetParentSize() >= visualBall.bigSize)
             {
                 collision.gameObject.GetComponent<Wall>().DestroyWall();
@@ -336,6 +335,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method to remove snowballs from player
+    /// </summary>
+    /// <param name="count">quantity of snowballs to remove</param>
     public void RemoveSnowballs(int count)
     {
         if (GameManager.Instance.currentPhase == GameManager.GamePhase.RankingArea)
@@ -344,9 +347,11 @@ public class Player : MonoBehaviour
             {
                 //TODO: HARDCODE
                 snowBalls.RemoveRange(0, count);
+                //decreases player speed
                 _zSpeed--;
                 Debug.Log("Ahora" + snowBalls.Count);
 
+                //decreases visual ball
                 for (int i = 0; i < count; i++)
                 {
                     //TODO:hardCODE
@@ -356,11 +361,15 @@ public class Player : MonoBehaviour
             }
             else if (snowBalls.Count <= count && snowBalls.Count > 0)
             {
+                //TODO: HARDCODE
                 snowBalls.RemoveAt(0);
+
+                //decreases visual ball
                 visualBall.StartDecreasingBall(.5f);
             }
             else
             {
+                //Clears list, decreases the ball and ends game
                 snowBalls.Clear();
 
                 //TODO:hardCODE
@@ -370,6 +379,7 @@ public class Player : MonoBehaviour
                 GameManager.Instance.EndGame();
             }
 
+            //Shows snowballs count in UI
             UIManager.Instance.updateBalls(snowBalls.Count);
         }
         else

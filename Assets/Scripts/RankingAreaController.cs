@@ -1,16 +1,22 @@
+/**
+ * 
+ * Created by Esperanza Barcia DEC 2021
+ * 
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///Class to change colors of ranking area
 public class RankingAreaController : MonoBehaviour
 {
     /// <summary>
-    /// 
+    /// Materials to assign
     /// </summary>
     public Material[] materials;
 
     /// <summary>
-    /// 
+    /// Material previously assigned
     /// </summary>
     Material previousMaterial;
 
@@ -30,7 +36,9 @@ public class RankingAreaController : MonoBehaviour
 
             } while (previousMaterial == randomMaterial);
 
+            //Sets it
             MeshRenderer currentMeshRenderer = transform.GetChild(i).GetComponent<MeshRenderer>();
+
             if (currentMeshRenderer)
             {
                 transform.GetChild(i).GetComponent<MeshRenderer>().material = randomMaterial;
@@ -43,10 +51,10 @@ public class RankingAreaController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //if the player is colliding, ssets the game phase
         if (other.CompareTag("Player"))
         {
-
-            GameManager.Instance.startRankingArea();
+            GameManager.Instance.StartRankingArea();
         }
     }
 

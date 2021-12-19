@@ -1,3 +1,8 @@
+/**
+ * 
+ * Created by Esperanza Barcia DEC 2021
+ * 
+ */
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,21 +19,26 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     /// <summary>
-    /// Players speed, setted by inspector
+    /// Players Zspeed, setted by inspector
     /// </summary>
     int playerZSpeed;
 
     [SerializeField]
     /// <summary>
-    ///
+    ///Players Xspeed, setted by inspector
     /// </summary>
     int playerXSpeed;
 
+    /// <summary>
+    /// player score, from player
+    /// </summary>
     int playerScore;
 
+    /// <summary>
+    /// score multiplier
+    /// </summary>
     int multiplier = 0;
 
-    //TODO: UI CONTROLLER¿?
     /// <summary>
     /// Tag asigned to goal gameobject
     /// </summary>
@@ -44,6 +54,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public string wallTagName;
 
+    /// <summary>
+    /// Enum to check the current game phase
+    /// </summary>
     public enum GamePhase
     {
         Gameplay,
@@ -75,10 +88,11 @@ public class GameManager : MonoBehaviour
 
     public int Multiplier { set => multiplier = value; }
 
-
     // Start is called before the first frame update
     void Start()
     {
+        //Shows the title
+        UIManager.Instance.ToggleTitleUI(true);
     }
 
     /// <summary>
@@ -86,8 +100,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
-        //disables canvas
-
+        //disables initial canvas
         UIManager.Instance.ToggleTitleUI(false);
 
         if (player)
@@ -96,6 +109,7 @@ public class GameManager : MonoBehaviour
             player.Initialise(playerZSpeed, playerXSpeed);
             currentPhase = GamePhase.Gameplay;
 
+            //enables moving tutorial canvas
             UIManager.Instance.ToggleMovingTutorial(true);
         }
         else
@@ -105,7 +119,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Method to call when the player dies
+    /// Method to call when the player is defeated
     /// </summary>
     public void GameOver()
     {
@@ -116,8 +130,6 @@ public class GameManager : MonoBehaviour
         {
             //Stops the player
             player.Stop();
-
-            //TODO: animation¿?
         }
         else
         {
@@ -139,11 +151,12 @@ public class GameManager : MonoBehaviour
             //Stops the player
             player.Stop();
 
-            //TODO: CANVAS bueno
-
             //Sets the score of the player
             playerScore += CalculateScore();
-            Debug.Log("PlayerScore " + playerScore);
+
+            //Shows points
+            UIManager.Instance.SetFinalPoints(playerScore);
+
         }
         else
         {
@@ -159,14 +172,16 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void startRankingArea()
+    /// <summary>
+    /// Method to change game phase
+    /// </summary>
+    public void StartRankingArea()
     {
         currentPhase = GamePhase.RankingArea;
-        Debug.Log("Entrando en ranking con: " + player.snowBalls.Count);
     }
 
     /// <summary>
-    /// Method to set the player score
+    /// Method to calculate the player score
     /// </summary>
     int CalculateScore()
     {

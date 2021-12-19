@@ -1,8 +1,14 @@
+/**
+ * 
+ * Created by Esperanza Barcia DEC 2021
+ * 
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+///Class to handle multiplier behaviour
 public class Multiplier : MonoBehaviour
 {
     /// <summary>
@@ -10,13 +16,19 @@ public class Multiplier : MonoBehaviour
     /// </summary>
     public int multiplyValue;
 
+    /// <summary>
+    /// Visual text
+    /// </summary>
     public Text valueText;
 
+    /// <summary>
+    /// Balls to remove to the player when is colliding
+    /// </summary>
     public int snowballsToRemove;
 
     private void Start()
     {
-        if(valueText)
+        if (valueText)
         {
             valueText.text = "x " + multiplyValue;
         }
@@ -28,10 +40,11 @@ public class Multiplier : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
+            //Sets the multiplier and removes balls from the player
             GameManager.Instance.Multiplier = multiplyValue;
-            //TODO:HARDCODE
+
             collision.gameObject.GetComponent<Player>().RemoveSnowballs(
                 snowballsToRemove);
         }

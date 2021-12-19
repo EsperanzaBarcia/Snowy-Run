@@ -1,23 +1,20 @@
+/**
+ * 
+ * Created by Esperanza Barcia DEC 2021
+ * 
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Class to control wall behaviour
 public class Wall : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// Method to destroy wall
+    /// </summary>
     public void DestroyWall()
     {
-        //Animation
         //Disables the wall
         gameObject.SetActive(false);
     }

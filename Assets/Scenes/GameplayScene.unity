@@ -3148,6 +3148,7 @@ MonoBehaviour:
   TutorialUI: {fileID: 675084193}
   ScoreText: {fileID: 1274725173}
   ballText: {fileID: 1865068383}
+  finalPointsText: {fileID: 817991358}
 --- !u!1 &1192102290
 GameObject:
   m_ObjectHideFlags: 0

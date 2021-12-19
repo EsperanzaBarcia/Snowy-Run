@@ -1,8 +1,14 @@
+/**
+ * 
+ * Created by Esperanza Barcia DEC 2021
+ * 
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Class to control UI
 public class UIManager : MonoBehaviour
 {
     [Header("UI references")]
@@ -22,17 +28,27 @@ public class UIManager : MonoBehaviour
     public GameObject GameOverUI;
 
     /// <summary>
-    /// 
+    /// Reference to Tutorial canvas
     /// </summary>
     public GameObject TutorialUI;
 
     /// <summary>
-    /// 
+    /// Reference to tutorial animator
     /// </summary>
     Animator tutorialAnimator;
 
+    [Header("Visual texts")]
     public Text ScoreText;
-    public Text ballText;
+
+    /// <summary>
+    /// Snowballs count text
+    /// </summary>
+    public Text ballsText;
+
+    /// <summary>
+    /// Points at the end of the game text
+    /// </summary>
+    public Text finalPointsText;
 
     #region Singleton pattern
 
@@ -57,15 +73,14 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //sets references
         tutorialAnimator = TutorialUI.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    /// <summary>
+    /// Method to show/hide moving tutorial
+    /// </summary>
+    /// <param name="show"></param>
     public void ToggleMovingTutorial(bool show)
     {
         if (tutorialAnimator)
@@ -79,10 +94,14 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Tutorial UI not assigned");
+            Debug.LogError("Tutorial animator not assigned");
         }
     }
 
+    /// <summary>
+    ///  Method to show/hide shooting tutorial
+    /// </summary>
+    /// <param name="show"></param>
     public void ToggleShootingTutorial(bool show)
     {
         if (tutorialAnimator)
@@ -100,17 +119,30 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  Method to show/hide initial canvas
+    /// </summary>
+    /// <param name="show"></param>
     public void ToggleTitleUI(bool show)
     {
-        ToggleMovingTutorial(false);
-        ToggleShootingTutorial(false);
 
         if (titleUI)
         {
             if (show)
+            {
                 titleUI.SetActive(true);
+                //hides texts
+                ScoreText.transform.parent.gameObject.SetActive(false);
+                ballsText.transform.parent.gameObject.SetActive(false);
+            }
             else
+            {
                 titleUI.SetActive(false);
+                //hides texts
+                ScoreText.transform.parent.gameObject.SetActive(true);
+                ballsText.transform.parent.gameObject.SetActive(true);
+
+            }
 
         }
         else
@@ -119,7 +151,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    ///  Method to show/hide  end ui
+    /// </summary>
+    /// <param name="show"></param>
     public void ToggleEndUI(bool show)
     {
         ToggleMovingTutorial(false);
@@ -139,7 +174,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    ///  Method to show/hide Game Over ui
+    /// </summary>
+    /// <param name="show"></param>
     public void ToggleGameOverUI(bool show)
     {
         ToggleMovingTutorial(false);
@@ -159,14 +197,30 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Method to update score text
+    /// </summary>
+    /// <param name="newScore"></param>
     public void updateScore(int newScore)
     {
         ScoreText.text = newScore.ToString();
     }
 
+    /// <summary>
+    /// Method to update snowballs count text
+    /// </summary>
+    /// <param name="newBalls"></param>
     public void updateBalls(int newBalls)
     {
-        ballText.text = newBalls.ToString();
+        ballsText.text = newBalls.ToString();
+    }
+
+    /// <summary>
+    /// Method to update final points text
+    /// </summary>
+    /// <param name="points"></param>
+    public void SetFinalPoints(int points)
+    {
+        finalPointsText.text = points.ToString();
     }
 }
