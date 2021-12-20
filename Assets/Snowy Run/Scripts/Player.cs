@@ -26,6 +26,11 @@ public class Player : MonoBehaviour
     Transform playerTransform;
 
     /// <summary>
+    /// Direction to move the player
+    /// </summary>
+    Vector3 direction = Vector3.zero;
+
+    /// <summary>
     /// Player score
     /// </summary>
     int _score;
@@ -34,6 +39,11 @@ public class Player : MonoBehaviour
     /// Force to impulse the bullets
     /// </summary>
     public int bulletForce = 15;
+
+    /// <summary>
+    /// Force to impulse the bullets
+    /// </summary>
+    public float sizeToDecreaseOnCrash = .5f;
 
     /// <summary>
     /// List of ready bullets to shoot
@@ -49,11 +59,6 @@ public class Player : MonoBehaviour
     /// bool to set when the player can move
     /// </summary>
     bool canMove;
-
-    /// <summary>
-    /// Direction to move the player
-    /// </summary>
-    Vector3 direction = Vector3.zero;
 
     /// <summary>
     /// Reference to character
@@ -142,10 +147,6 @@ public class Player : MonoBehaviour
 
     }
 
-    private void OnMouseDown()
-    {
-        Shoot();
-    }
     /// <summary>
     /// Method to start moving the player
     /// </summary>
@@ -209,7 +210,6 @@ public class Player : MonoBehaviour
             //Now the player is the parent
             ball.transform.SetParent(shootPosition);
 
-            //TODO:HARDCODE
             //Position from which is going to be shot
             ball.transform.localPosition = Vector3.zero;
 
@@ -223,8 +223,7 @@ public class Player : MonoBehaviour
 
             if (visualBall)
             {
-                //TODO:HARDCODE
-                visualBall.StartIncreasingBall(.5f);
+                visualBall.StartIncreasingBall(sizeToDecreaseOnCrash);
             }
             else
             {
@@ -305,9 +304,14 @@ public class Player : MonoBehaviour
             //Breaks the wall if the ball is on big mode
             if (visualBall.GetParentSize() >= visualBall.bigSize)
             {
-                collision.gameObject.GetComponent<Wall>().DestroyWall();
-                //TODO:HARDCODE
-                RemoveSnowballs(10);
+                Wall wallScript = collision.gameObject.GetComponent<Wall>();
+                if (wallScript)
+                {
+                    _score += wallScript.points;
+                    wallScript.DestroyWall();
+                    UIManager.Instance.updateScore(_score);
+                    RemoveSnowballs(wallScript.snowBallsToRemoveOnCrash);
+                }
             }
             else
             {
@@ -332,37 +336,30 @@ public class Player : MonoBehaviour
         {
             if (snowBalls.Count >= count)
             {
-                //TODO: HARDCODE
                 snowBalls.RemoveRange(0, count);
                 //decreases player speed
                 _zSpeed--;
-                Debug.Log("Ahora" + snowBalls.Count);
 
                 //decreases visual ball
                 for (int i = 0; i < count; i++)
                 {
-                    //TODO:hardCODE
-                    visualBall.StartDecreasingBall(.5f);
+                    visualBall.StartDecreasingBall(sizeToDecreaseOnCrash);
                 }
 
             }
             else if (snowBalls.Count <= count && snowBalls.Count > 0)
             {
-                //TODO: HARDCODE
                 snowBalls.RemoveAt(0);
 
                 //decreases visual ball
-                visualBall.StartDecreasingBall(.5f);
+                visualBall.StartDecreasingBall(sizeToDecreaseOnCrash);
             }
             if (snowBalls.Count == 0)
             {
-
                 //Clears list, decreases the ball and ends game
                 snowBalls.Clear();
 
-                //TODO:hardCODE
-                //TODO:CAMBIAR VALOR
-                visualBall.StartDecreasingBall(1f);
+                visualBall.StartDecreasingBall(visualBall.maxSize);
 
                 GameManager.Instance.EndGame();
             }
@@ -374,8 +371,7 @@ public class Player : MonoBehaviour
         {
             for (int i = 0; i < count; i++)
             {
-                //TODO:hardCODE
-                visualBall.StartDecreasingBall(.5f);
+                visualBall.StartDecreasingBall(sizeToDecreaseOnCrash);
             }
         }
     }

@@ -78,7 +78,6 @@ public class Spawner : MonoBehaviour
             //resets the position
             if ((int)transform.position.z == (int)(goal.transform.position.z - 2))
             {
-                //TODO:HARDCODE
                 transform.position = new Vector3(transform.position.x + 5, startPosition.y, startPosition.z);
                 i = (int)startPosition.z;
                 times++;

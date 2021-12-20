@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScene.unity
     guid: 1b6789f5d7370aa46b90873ebde92bfe
   - enabled: 1
-    path: Assets/Scenes/GameplayScene.unity
+    path: Assets/Snowy Run/Scenes/GameplayScene.unity
     guid: 8787535c223ddf747b220d0d3118859e
   m_configObjects: {}

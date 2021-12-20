@@ -11,6 +11,16 @@ using UnityEngine;
 public class Wall : MonoBehaviour
 {
     /// <summary>
+    /// Points given for breaking the wall
+    /// </summary>
+    public int points;
+
+    /// <summary>
+    /// Points given for breaking the wall
+    /// </summary>
+    public int snowBallsToRemoveOnCrash = 10;
+
+    /// <summary>
     /// Method to destroy wall
     /// </summary>
     public void DestroyWall()

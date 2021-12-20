@@ -189,7 +189,6 @@ public class PlayerBallController : MonoBehaviour
         else
         {
             //minimun size
-            //TODO:HARDCODE
             finalScale = new Vector3(minSize, minSize, minSize);
         }
 
